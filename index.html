@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Program</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #f3f3f3;
+            --text-muted: #aaaaaa;
+            --accent: #4caf50;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        .day-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .day-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: var(--accent);
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+        .exercise-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .exercise-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .exercise-item input[type="checkbox"] {
+            margin-top: 5px;
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+        .exercise-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .exercise-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .exercise-reps {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+        .reset-btn:hover {
+            background-color: #b71c1c;
+        }
+        .completed-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Weekly Training Split</h1>
+
+    <div id="program-container"></div>
+
+    <button class="reset-btn" onclick="resetProgress()">Reset week</button>
+</div>
+
+<script>
+    const program = [
+        {
+            day: "Day 1: Short-Term Cardio",
+            exercises: [
+                { id: "d1-1", name: "Warm-up", reps: "5 mins dynamic movement" },
+                { id: "d1-2", name: "High-Intensity Intervals (Assault Bike / Sprint)", reps: "30 seconds max effort / 30 seconds rest (x10)" },
+                { id: "d1-3", name: "Cooldown", reps: "5 mins light movement" }
+            ]
+        },
+        {
+            day: "Day 2: Long-Term Cardio",
+            exercises: [
+                { id: "d2-1", name: "Zone 2 Steady State (Jog or Swim)", reps: "45-60 mins steady pace (heart rate 130-150 bpm)" }
+            ]
+        },
+        {
+            day: "Day 3: Absolute Strength",
+            exercises: [
+                { id: "d3-1", name: "Barbell Back Squat", reps: "3 sets x 3-5 reps (2-3 min rest)" },
+                { id: "d3-2", name: "Flat Bench Press", reps: "3 sets x 3-5 reps (2-3 min rest)" },
+                { id: "d3-3", name: "Heavy Weighted Pull-Ups", reps: "3 sets x 3-5 reps (2-3 min rest)" }
+            ]
+        },
+        {
+            day: "Day 4: Functional Hypertrophy",
+            exercises: [
+                { id: "d4-1", name: "Incline Dumbbell Press", reps: "2 sets to absolute failure (8-12 reps)" },
+                { id: "d4-2", name: "Lat Pulldowns or Cable Rows", reps: "2 sets to absolute failure (8-12 reps)" },
+                { id: "d4-3", name: "Leg Extensions", reps: "2 sets to absolute failure (8-12 reps)" },
+                { id: "d4-4", name: "Seated Hamstring Curls", reps: "2 sets to absolute failure (8-12 reps)" },
+                { id: "d4-5", name: "Bicep Curls / Tricep Pushdowns", reps: "2 sets to absolute failure each" }
+            ]
+        },
+        {
+            day: "Day 5: Explosive Power",
+            exercises: [
+                { id: "d5-1", name: "Box Jumps", reps: "3 sets x 3-5 reps (Focus on max height/speed)" },
+                { id: "d5-2", name: "Medicine Ball Slams", reps: "3 sets x 3-5 reps" },
+                { id: "d5-3", name: "Heavy Kettlebell Swings", reps: "3 sets x 5 reps" }
+            ]
+        },
+        {
+            day: "Day 6: Rest",
+            exercises: [
+                { id: "d6-1", name: "Complete Rest or Active Recovery", reps: "Sleep, hydrate, walk" }
+            ]
+        },
+        {
+            day: "Day 7: Deep Stretch & Armor",
+            exercises: [
+                { id: "d7-1", name: "Scapular Push-Ups (Serratus)", reps: "2 sets x 15 reps" },
+                { id: "d7-2", name: "Neck Harness Flexions / Shrugs", reps: "2 sets x 15 reps" },
+                { id: "d7-3", name: "Wrist Curls / Reverse Curls (Forearms)", reps: "2 sets x 15 reps" },
+                { id: "d7-4", name: "Standing Calf Raises", reps: "2 sets to failure" },
+                { id: "d7-5", name: "Hanging Leg Raises (Abs)", reps: "2 sets to failure" },
+                { id: "d7-6", name: "45-Degree Hyperextensions (Lower Back)", reps: "2 sets x 12-15 reps" },
+                { id: "d7-7", name: "Deep Full-Body Stretch", reps: "15-20 mins (focus on hips, shoulders, back)" }
+            ]
+        }
+    ];
+
+    const container = document.getElementById("program-container");
+
+    program.forEach(day => {
+        const card = document.createElement("div");
+        card.className = "day-card";
+        
+        const title = document.createElement("h2");
+        title.className = "day-title";
+        title.textContent = day.day;
+        card.appendChild(title);
+
+        const list = document.createElement("ul");
+        list.className = "exercise-list";
+
+        day.exercises.forEach(ex => {
+            const item = document.createElement("li");
+            item.className = "exercise-item";
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = ex.id;
+            
+            if (localStorage.getItem(ex.id) === "true") {
+                checkbox.checked = true;
+            }
+
+            const details = document.createElement("div");
+            details.className = "exercise-details";
+            
+            const name = document.createElement("span");
+            name.className = "exercise-name";
+            name.textContent = ex.name;
+            name.id = "name-" + ex.id;
+            
+            if (checkbox.checked) {
+                name.classList.add("completed-text");
+            }
+
+            const reps = document.createElement("span");
+            reps.className = "exercise-reps";
+            reps.textContent = ex.reps;
+
+            checkbox.addEventListener("change", (e) => {
+                localStorage.setItem(ex.id, e.target.checked);
+                if (e.target.checked) {
+                    name.classList.add("completed-text");
+                } else {
+                    name.classList.remove("completed-text");
+                }
+            });
+
+            details.appendChild(name);
+            details.appendChild(reps);
+            
+            item.appendChild(checkbox);
+            item.appendChild(details);
+            list.appendChild(item);
+        });
+
+        card.appendChild(list);
+        container.appendChild(card);
+    });
+
+    function resetProgress() {
+        if(confirm("Are you sure you want to reset all progress for the week?")) {
+            program.forEach(day => {
+                day.exercises.forEach(ex => {
+                    localStorage.removeItem(ex.id);
+                    const checkbox = document.getElementById(ex.id);
+                    if(checkbox) checkbox.checked = false;
+                    
+                    const name = document.getElementById("name-" + ex.id);
+                    if(name) name.classList.remove("completed-text");
+                });
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
+
