@@ -1,253 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Program</title>
-    <style>
-        :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #f3f3f3;
-            --text-muted: #aaaaaa;
-            --accent: #4caf50;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
-        }
-        .day-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .day-title {
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            color: var(--accent);
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-        }
-        .exercise-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .exercise-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        .exercise-item input[type="checkbox"] {
-            margin-top: 5px;
-            margin-right: 15px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: var(--accent);
-        }
-        .exercise-details {
-            display: flex;
-            flex-direction: column;
-        }
-        .exercise-name {
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-        .exercise-reps {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .reset-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background-color: #d32f2f;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 30px;
-            margin-bottom: 50px;
-        }
-        .reset-btn:hover {
-            background-color: #b71c1c;
-        }
-        .completed-text {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#15141a;
+  --bg-elev:#1e1c25;
+  --bg-elev-2:#27242f;
+  --line:#332f3c;
+  --text:#f3efe6;
+  --text-dim:#9c98a6;
+  --text-faint:#6b6874;
+  --accent:#c9a24b;
+  --accent-ink:#1a1710;
+  --high:#c67059;
+  --high-bg:rgba(198,112,89,.16);
+  --mod:#bfa876;
+  --mod-bg:rgba(191,168,118,.16);
+  --low:#79a093;
+  --low-bg:rgba(121,160,147,.16);
+  --radius:10px;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'IBM Plex Sans',-apple-system,sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);}
+body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:560px;margin:0 auto;}
+
+.hdr{text-align:center;margin-bottom:26px;}
+.hdr-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--accent);margin:0 0 6px;text-transform:uppercase;}
+.hdr-title{font-family:var(--font-display);font-size:54px;letter-spacing:.02em;margin:0;line-height:1;}
+.hdr-range{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin:10px 0 24px;}
+
+.tally{display:flex;justify-content:center;gap:8px;}
+.tally-mark{width:34px;height:34px;border-radius:7px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-faint);transition:background .15s ease,border-color .15s ease,transform .15s ease;}
+.tally-mark.is-today{border-color:var(--accent);color:var(--text);}
+.tally-mark.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+.tally-mark.is-done:nth-child(odd){transform:rotate(-3deg);}
+.tally-mark.is-done:nth-child(even){transform:rotate(2deg);}
+
+#days{display:flex;flex-direction:column;gap:10px;}
+
+.day{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.day.is-today{border-color:var(--accent);}
+.day>summary{list-style:none;cursor:pointer;}
+.day>summary::-webkit-details-marker{display:none;}
+.day>summary::marker{content:"";}
+
+.day-hdr{display:flex;align-items:center;gap:14px;padding:14px 16px;}
+.day-hdr-date{font-family:var(--font-mono);text-align:center;min-width:42px;line-height:1.25;}
+.day-date{display:block;font-size:11px;color:var(--text-faint);}
+.day-name{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+.day-hdr-mid{flex:1;min-width:0;}
+.day-title{font-family:var(--font-display);font-size:22px;letter-spacing:.01em;margin:0 0 5px;line-height:1.05;}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;}
+.day.tag-high .tag{background:var(--high-bg);color:var(--high);}
+.day.tag-moderate .tag{background:var(--mod-bg);color:var(--mod);}
+.day.tag-low .tag{background:var(--low-bg);color:var(--low);}
+.day-hdr-right{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);flex-shrink:0;}
+.day-progress{font-size:13px;color:var(--text-dim);}
+.day.is-complete .day-progress{color:var(--accent);}
+.chevron{color:var(--text-faint);transition:transform .15s ease;flex-shrink:0;}
+.day[open] .chevron{transform:rotate(180deg);}
+
+.day-body{padding:0 16px 18px;}
+.day-note{font-size:13.5px;color:var(--text-dim);margin:0 0 12px;padding-top:12px;border-top:1px solid var(--line);}
+
+.group-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);padding:10px 6px 4px;}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;}
+
+.item-row{display:flex;align-items:center;gap:12px;padding:10px 6px;border-radius:8px;cursor:pointer;}
+.item-row:hover{background:var(--bg-elev-2);}
+
+.checkbox-wrap{position:relative;width:22px;height:22px;flex-shrink:0;}
+.checkbox-wrap input[type=checkbox]{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer;}
+.item-check{position:absolute;inset:0;border-radius:5px;border:1.5px solid var(--line);pointer-events:none;transition:background .12s ease,border-color .12s ease;}
+input[type=checkbox]:checked+.item-check{background:var(--accent);border-color:var(--accent);}
+input[type=checkbox]:checked+.item-check::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg);}
+input[type=checkbox]:focus-visible+.item-check{outline:2px solid var(--accent);outline-offset:2px;}
+
+.item-name{flex:1;font-size:15px;}
+input[type=checkbox]:checked~.item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
+.item-detail{font-family:var(--font-mono);font-size:12.5px;color:var(--text-faint);white-space:nowrap;}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+@media (max-width:380px){.hdr-title{font-size:44px;}.day-title{font-size:19px;}}
+</style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Weekly Training Split</h1>
-
-    <div id="program-container"></div>
-
-    <button class="reset-btn" onclick="resetProgress()">Reset week</button>
+<div class="wrap">
+  <header class="hdr">
+    <p class="hdr-eyebrow">7-Day Camp</p>
+    <h1 class="hdr-title">CAMP LOG</h1>
+    <p class="hdr-range" id="weekRange"></p>
+    <div class="tally" id="tally"></div>
+  </header>
+  <main id="days"></main>
 </div>
 
 <script>
-    const program = [
-        {
-            day: "Day 1: Short-Term Cardio",
-            exercises: [
-                { id: "d1-1", name: "Warm-up", reps: "5 mins dynamic movement" },
-                { id: "d1-2", name: "High-Intensity Intervals (Assault Bike / Sprint)", reps: "30 seconds max effort / 30 seconds rest (x10)" },
-                { id: "d1-3", name: "Cooldown", reps: "5 mins light movement" }
-            ]
-        },
-        {
-            day: "Day 2: Long-Term Cardio",
-            exercises: [
-                { id: "d2-1", name: "Zone 2 Steady State (Jog or Swim)", reps: "45-60 mins steady pace (heart rate 130-150 bpm)" }
-            ]
-        },
-        {
-            day: "Day 3: Absolute Strength",
-            exercises: [
-                { id: "d3-1", name: "Barbell Back Squat", reps: "3 sets x 3-5 reps (2-3 min rest)" },
-                { id: "d3-2", name: "Flat Bench Press", reps: "3 sets x 3-5 reps (2-3 min rest)" },
-                { id: "d3-3", name: "Heavy Weighted Pull-Ups", reps: "3 sets x 3-5 reps (2-3 min rest)" }
-            ]
-        },
-        {
-            day: "Day 4: Functional Hypertrophy",
-            exercises: [
-                { id: "d4-1", name: "Incline Dumbbell Press", reps: "2 sets to absolute failure (8-12 reps)" },
-                { id: "d4-2", name: "Lat Pulldowns or Cable Rows", reps: "2 sets to absolute failure (8-12 reps)" },
-                { id: "d4-3", name: "Leg Extensions", reps: "2 sets to absolute failure (8-12 reps)" },
-                { id: "d4-4", name: "Seated Hamstring Curls", reps: "2 sets to absolute failure (8-12 reps)" },
-                { id: "d4-5", name: "Bicep Curls / Tricep Pushdowns", reps: "2 sets to absolute failure each" }
-            ]
-        },
-        {
-            day: "Day 5: Explosive Power",
-            exercises: [
-                { id: "d5-1", name: "Box Jumps", reps: "3 sets x 3-5 reps (Focus on max height/speed)" },
-                { id: "d5-2", name: "Medicine Ball Slams", reps: "3 sets x 3-5 reps" },
-                { id: "d5-3", name: "Heavy Kettlebell Swings", reps: "3 sets x 5 reps" }
-            ]
-        },
-        {
-            day: "Day 6: Rest",
-            exercises: [
-                { id: "d6-1", name: "Complete Rest or Active Recovery", reps: "Sleep, hydrate, walk" }
-            ]
-        },
-        {
-            day: "Day 7: Deep Stretch & Armor",
-            exercises: [
-                { id: "d7-1", name: "Scapular Push-Ups (Serratus)", reps: "2 sets x 15 reps" },
-                { id: "d7-2", name: "Neck Harness Flexions / Shrugs", reps: "2 sets x 15 reps" },
-                { id: "d7-3", name: "Wrist Curls / Reverse Curls (Forearms)", reps: "2 sets x 15 reps" },
-                { id: "d7-4", name: "Standing Calf Raises", reps: "2 sets to failure" },
-                { id: "d7-5", name: "Hanging Leg Raises (Abs)", reps: "2 sets to failure" },
-                { id: "d7-6", name: "45-Degree Hyperextensions (Lower Back)", reps: "2 sets x 12-15 reps" },
-                { id: "d7-7", name: "Deep Full-Body Stretch", reps: "15-20 mins (focus on hips, shoulders, back)" }
-            ]
-        }
-    ];
+const STORAGE_KEY = 'campLogState';
 
-    const container = document.getElementById("program-container");
+const DAYS = [
+  { name:"Sunday", title:"Hypertrophy", tag:"moderate", tagLabel:"Moderate", time:"~50 min",
+    note:"Shoulders, arms, glutes & hamstrings. 2 sets to failure, keep moving.",
+    items:[
+      {name:"Seated DB Overhead Press", detail:"2 × failure", group:"Shoulders"},
+      {name:"Lateral Raise", detail:"2 × failure", group:"Shoulders"},
+      {name:"Face Pull", detail:"2 × failure", group:"Shoulders"},
+      {name:"Romanian Deadlift", detail:"2 × failure", group:"Posterior Chain"},
+      {name:"Hip Thrust", detail:"2 × failure", group:"Posterior Chain"},
+      {name:"Incline DB Curl", detail:"2 × failure", group:"Arms"},
+      {name:"Hammer Curl", detail:"2 × failure", group:"Arms"},
+      {name:"Cable Triceps Extension", detail:"2 × failure", group:"Arms"},
+    ]
+  },
+  { name:"Monday", title:"Long-Term Cardio", tag:"moderate", tagLabel:"Moderate · Fasted", time:"45–50 min",
+    note:"Zone 2 run. Conversational pace — if you can't talk, back off.",
+    items:[
+      {name:"Run", detail:"45–50 min, Zone 2"},
+    ]
+  },
+  { name:"Tuesday", title:"Explosive Power", tag:"high", tagLabel:"High", time:"~40–45 min",
+    note:"Full recovery between sets. Speed over volume.",
+    items:[
+      {name:"Box Jump / Broad Jump", detail:"4 × 5"},
+      {name:"Med Ball Rotational Throw", detail:"3 × 5/side"},
+      {name:"Med Ball Slam", detail:"3 × 5"},
+      {name:"Explosive KB Swing (full reset)", detail:"3 × 5"},
+    ]
+  },
+  { name:"Wednesday", title:"Strength", tag:"high", tagLabel:"High", time:"~55 min",
+    note:"Chest, back & legs. Heavy triples, then one failure finisher each.",
+    items:[
+      {name:"Squat", detail:"3 × 5", group:"Main Lifts"},
+      {name:"Bench Press", detail:"3 × 5", group:"Main Lifts"},
+      {name:"Deadlift", detail:"3 × 5", group:"Main Lifts"},
+      {name:"Leg Extension / Leg Press", detail:"2 × failure", group:"Finishers"},
+      {name:"Incline DB Press / Cable Fly", detail:"2 × failure", group:"Finishers"},
+      {name:"Pull-Up (add weight if easy)", detail:"2 × failure", group:"Finishers"},
+    ]
+  },
+  { name:"Thursday", title:"Short-Term Cardio", tag:"high", tagLabel:"High · Fasted", time:"~30–35 min",
+    note:"5 rounds, 1 min rest between rounds. Move as fast as you can.",
+    items:[
+      {name:"Kettlebell Swings", detail:"× 20"},
+      {name:"Burpees", detail:"× 15"},
+      {name:"Jump Lunges", detail:"× 12/leg"},
+      {name:"Push-Ups", detail:"× 20"},
+      {name:"Heavy Bag, all-out", detail:"30 sec"},
+    ]
+  },
+  { name:"Friday", title:"Rest", tag:"low", tagLabel:"Recovery", time:"—",
+    note:"Full rest. No lifting, no explosive work.",
+    items:[]
+  },
+  { name:"Saturday", title:"Deep Stretch + Accessory", tag:"low", tagLabel:"Recovery", time:"~40–45 min",
+    note:"Neck, traps, forearms, calves, abs, serratus — the stuff other days skip.",
+    items:[
+      {name:"90/90 Hip Switches", detail:"flow", group:"Mobility"},
+      {name:"Couch Stretch", detail:"flow", group:"Mobility"},
+      {name:"Thoracic Rotations", detail:"flow", group:"Mobility"},
+      {name:"Banded Shoulder Dislocates", detail:"flow", group:"Mobility"},
+      {name:"Neck Circles", detail:"flow", group:"Mobility"},
+      {name:"Neck, 4-way resistance", detail:"3 ×", group:"Accessory"},
+      {name:"Farmer Carry", detail:"3 × 40m", group:"Accessory"},
+      {name:"Wrist Curl + Reverse Curl", detail:"2 × each", group:"Accessory"},
+      {name:"Standing Calf Raise", detail:"3 × 15", group:"Accessory"},
+      {name:"Hanging Leg Raise", detail:"3 × failure", group:"Accessory"},
+      {name:"Plank / Cable Rotation", detail:"2 × each", group:"Accessory"},
+      {name:"Scapular Push-Up / Landmine Press", detail:"2 × 12", group:"Accessory"},
+    ]
+  },
+];
 
-    program.forEach(day => {
-        const card = document.createElement("div");
-        card.className = "day-card";
-        
-        const title = document.createElement("h2");
-        title.className = "day-title";
-        title.textContent = day.day;
-        card.appendChild(title);
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function persist(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ /* in-memory only this session */ }
+}
 
-        const list = document.createElement("ul");
-        list.className = "exercise-list";
+function startOfWeek(d){
+  const date = new Date(d);
+  date.setHours(0,0,0,0);
+  date.setDate(date.getDate() - date.getDay());
+  return date;
+}
+function dateKey(d){
+  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function fmtCardDate(d){
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
+}
+function fmtWeekRange(start){
+  const end = new Date(start);
+  end.setDate(start.getDate()+6);
+  const sameMonth = start.getMonth()===end.getMonth();
+  const startStr = start.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const endStr = sameMonth ? end.getDate() : end.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  return `Week of ${startStr}\u2013${endStr}`;
+}
 
-        day.exercises.forEach(ex => {
-            const item = document.createElement("li");
-            item.className = "exercise-item";
+function dayCompletion(day, dayState){
+  if(day.items.length===0){
+    const done = !!(dayState && dayState.rested);
+    return {done: done?1:0, total:1, complete:done};
+  }
+  const total = day.items.length;
+  const done = day.items.filter((_,idx)=> dayState && dayState[idx]).length;
+  return {done, total, complete: done===total};
+}
 
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.id = ex.id;
-            
-            if (localStorage.getItem(ex.id) === "true") {
-                checkbox.checked = true;
-            }
+function render(){
+  const today = new Date();
+  const weekStart = startOfWeek(today);
+  const todayKey = dateKey(today);
 
-            const details = document.createElement("div");
-            details.className = "exercise-details";
-            
-            const name = document.createElement("span");
-            name.className = "exercise-name";
-            name.textContent = ex.name;
-            name.id = "name-" + ex.id;
-            
-            if (checkbox.checked) {
-                name.classList.add("completed-text");
-            }
+  document.getElementById('weekRange').textContent = fmtWeekRange(weekStart);
 
-            const reps = document.createElement("span");
-            reps.className = "exercise-reps";
-            reps.textContent = ex.reps;
+  const tallyEl = document.getElementById('tally');
+  const daysEl = document.getElementById('days');
+  tallyEl.innerHTML = '';
+  daysEl.innerHTML = '';
 
-            checkbox.addEventListener("change", (e) => {
-                localStorage.setItem(ex.id, e.target.checked);
-                if (e.target.checked) {
-                    name.classList.add("completed-text");
-                } else {
-                    name.classList.remove("completed-text");
-                }
-            });
+  DAYS.forEach((day, i)=>{
+    const cardDate = new Date(weekStart);
+    cardDate.setDate(weekStart.getDate()+i);
+    const key = dateKey(cardDate);
+    const isToday = key===todayKey;
+    const dayState = state[key] || {};
+    const comp = dayCompletion(day, dayState);
 
-            details.appendChild(name);
-            details.appendChild(reps);
-            
-            item.appendChild(checkbox);
-            item.appendChild(details);
-            list.appendChild(item);
-        });
+    const mark = document.createElement('div');
+    mark.className = 'tally-mark' + (comp.complete?' is-done':'') + (isToday?' is-today':'');
+    mark.textContent = day.name[0];
+    tallyEl.appendChild(mark);
 
-        card.appendChild(list);
-        container.appendChild(card);
+    const details = document.createElement('details');
+    details.className = `day tag-${day.tag}` + (comp.complete?' is-complete':'') + (isToday?' is-today':'');
+    if(openKeys.has(key)) details.open = true;
+
+    const summary = document.createElement('summary');
+    summary.className = 'day-hdr';
+    summary.innerHTML = `
+      <div class="day-hdr-date">
+        <span class="day-date">${fmtCardDate(cardDate)}</span>
+        <span class="day-name">${day.name}</span>
+      </div>
+      <div class="day-hdr-mid">
+        <h2 class="day-title">${day.title}</h2>
+        <span class="tag">${day.tagLabel}</span>
+      </div>
+      <div class="day-hdr-right">
+        <span class="day-progress">${comp.done}/${comp.total}</span>
+        <svg class="chevron" viewBox="0 0 24 24" width="18" height="18"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>`;
+    details.appendChild(summary);
+
+    details.addEventListener('toggle', ()=>{
+      if(details.open) openKeys.add(key); else openKeys.delete(key);
     });
 
-    function resetProgress() {
-        if(confirm("Are you sure you want to reset all progress for the week?")) {
-            program.forEach(day => {
-                day.exercises.forEach(ex => {
-                    localStorage.removeItem(ex.id);
-                    const checkbox = document.getElementById(ex.id);
-                    if(checkbox) checkbox.checked = false;
-                    
-                    const name = document.getElementById("name-" + ex.id);
-                    if(name) name.classList.remove("completed-text");
-                });
-            });
-        }
-    }
-</script>
+    const body = document.createElement('div');
+    body.className = 'day-body';
 
+    const note = document.createElement('p');
+    note.className = 'day-note';
+    note.textContent = day.time !== '\u2014' ? `${day.note}  \u00b7  ${day.time}` : day.note;
+    body.appendChild(note);
+
+    if(day.items.length===0){
+      const row = document.createElement('label');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <span class="checkbox-wrap">
+          <input type="checkbox" ${dayState.rested?'checked':''} data-key="${key}" data-rest="1">
+          <span class="item-check"></span>
+        </span>
+        <span class="item-name">Rested today</span>`;
+      body.appendChild(row);
+    } else {
+      const ul = document.createElement('ul');
+      ul.className = 'items';
+      let lastGroup = null;
+      day.items.forEach((it, idx)=>{
+        if(it.group && it.group!==lastGroup){
+          const gl = document.createElement('li');
+          gl.className = 'group-label';
+          gl.textContent = it.group;
+          ul.appendChild(gl);
+          lastGroup = it.group;
+        }
+        const li = document.createElement('li');
+        li.className = 'item';
+        li.innerHTML = `
+          <label class="item-row">
+            <span class="checkbox-wrap">
+              <input type="checkbox" ${dayState[idx]?'checked':''} data-key="${key}" data-idx="${idx}">
+              <span class="item-check"></span>
+            </span>
+            <span class="item-name">${it.name}</span>
+            <span class="item-detail">${it.detail}</span>
+          </label>`;
+        ul.appendChild(li);
+      });
+      body.appendChild(ul);
+    }
+
+    details.appendChild(body);
+    daysEl.appendChild(details);
+  });
+
+  daysEl.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener('change', onToggle);
+  });
+}
+
+function onToggle(e){
+  const cb = e.target;
+  const key = cb.dataset.key;
+  if(!state[key]) state[key] = {};
+  if(cb.dataset.rest){
+    state[key].rested = cb.checked;
+  } else {
+    state[key][cb.dataset.idx] = cb.checked;
+  }
+  persist();
+  render();
+}
+
+let state = loadState();
+let openKeys = new Set([dateKey(new Date())]);
+render();
+</script>
 </body>
 </html>
-
