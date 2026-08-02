@@ -18,12 +18,12 @@
   --text-faint:#6b6874;
   --accent:#c9a24b;
   --accent-ink:#1a1710;
-  --high:#c67059;
-  --high-bg:rgba(198,112,89,.16);
-  --mod:#bfa876;
-  --mod-bg:rgba(191,168,118,.16);
-  --low:#79a093;
-  --low-bg:rgba(121,160,147,.16);
+  --explosive:#c67059;
+  --explosive-bg:rgba(198,112,89,.16);
+  --strength:#bfa876;
+  --strength-bg:rgba(191,168,118,.16);
+  --hyp:#79a093;
+  --hyp-bg:rgba(121,160,147,.16);
   --radius:10px;
   --font-display:'Bebas Neue',sans-serif;
   --font-body:'IBM Plex Sans',-apple-system,sans-serif;
@@ -34,12 +34,38 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--text);}
 body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:560px;margin:0 auto;}
 
-.hdr{text-align:center;margin-bottom:26px;}
+.hdr{text-align:center;margin-bottom:18px;}
 .hdr-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--accent);margin:0 0 6px;text-transform:uppercase;}
 .hdr-title{font-family:var(--font-display);font-size:54px;letter-spacing:.02em;margin:0;line-height:1;}
-.hdr-range{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin:10px 0 24px;}
+.hdr-range{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin:10px 0 0;}
 
-.tally{display:flex;justify-content:center;gap:8px;}
+.sync-bar{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0;flex-wrap:wrap;}
+.sync-btn{background:var(--bg-elev);border:1px solid var(--line);color:var(--text-dim);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;padding:6px 10px;border-radius:6px;cursor:pointer;}
+.sync-btn:hover{border-color:var(--accent);color:var(--text);}
+.sync-status{font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);}
+.sync-status.ok{color:var(--hyp);}
+.sync-status.err{color:var(--explosive);}
+.sync-status.busy{color:var(--strength);}
+
+.sync-panel{max-width:440px;margin:0 auto 18px;background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
+.sync-panel[hidden]{display:none;}
+.sync-help{font-size:12px;color:var(--text-dim);margin:0 0 10px;line-height:1.5;}
+.sync-help a{color:var(--accent);}
+.sync-field{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;}
+.sync-field label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);}
+.sync-field input{background:var(--bg-elev-2);border:1px solid var(--line);border-radius:6px;color:var(--text);font-family:var(--font-body);font-size:13.5px;padding:8px 10px;}
+.sync-actions{display:flex;gap:8px;margin-top:10px;}
+.sync-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:6px;padding:8px 14px;font-family:var(--font-mono);font-size:11.5px;font-weight:600;cursor:pointer;}
+.sync-clear{background:none;border:1px solid var(--line);color:var(--text-dim);border-radius:6px;padding:8px 14px;font-family:var(--font-mono);font-size:11.5px;cursor:pointer;}
+
+.legend{display:flex;justify-content:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+.legend-dot.explosive{background:var(--explosive);}
+.legend-dot.strength{background:var(--strength);}
+.legend-dot.hypertrophy{background:var(--hyp);}
+
+.tally{display:flex;justify-content:center;gap:8px;margin-bottom:26px;}
 .tally-mark{width:34px;height:34px;border-radius:7px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-faint);transition:background .15s ease,border-color .15s ease,transform .15s ease;}
 .tally-mark.is-today{border-color:var(--accent);color:var(--text);}
 .tally-mark.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
@@ -59,11 +85,8 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 .day-date{display:block;font-size:11px;color:var(--text-faint);}
 .day-name{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
 .day-hdr-mid{flex:1;min-width:0;}
-.day-title{font-family:var(--font-display);font-size:22px;letter-spacing:.01em;margin:0 0 5px;line-height:1.05;}
-.tag{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;}
-.day.tag-high .tag{background:var(--high-bg);color:var(--high);}
-.day.tag-moderate .tag{background:var(--mod-bg);color:var(--mod);}
-.day.tag-low .tag{background:var(--low-bg);color:var(--low);}
+.day-title{font-family:var(--font-display);font-size:22px;letter-spacing:.01em;margin:0 0 3px;line-height:1.05;}
+.day-meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);}
 .day-hdr-right{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);flex-shrink:0;}
 .day-progress{font-size:13px;color:var(--text-dim);}
 .day.is-complete .day-progress{color:var(--accent);}
@@ -71,24 +94,41 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 .day[open] .chevron{transform:rotate(180deg);}
 
 .day-body{padding:0 16px 18px;}
-.day-note{font-size:13.5px;color:var(--text-dim);margin:0 0 12px;padding-top:12px;border-top:1px solid var(--line);}
+.day-note{font-size:13.5px;color:var(--text-dim);margin:0 0 10px;padding-top:12px;border-top:1px solid var(--line);}
 
 .group-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);padding:10px 6px 4px;}
 .items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;}
 
-.item-row{display:flex;align-items:center;gap:12px;padding:10px 6px;border-radius:8px;cursor:pointer;}
+.item-row{display:grid;grid-template-columns:22px 1fr;column-gap:12px;align-items:center;padding:9px 6px;border-radius:8px;cursor:pointer;}
 .item-row:hover{background:var(--bg-elev-2);}
+.item-cb{grid-column:1;grid-row:1;width:22px;height:22px;margin:0;opacity:0;cursor:pointer;}
+.item-check{grid-column:1;grid-row:1;position:relative;width:22px;height:22px;border-radius:5px;border:1.5px solid var(--line);pointer-events:none;transition:background .12s ease,border-color .12s ease;}
+.item-cb:checked+.item-check{background:var(--accent);border-color:var(--accent);}
+.item-cb:checked+.item-check::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg);}
+.item-cb:focus-visible+.item-check{outline:2px solid var(--accent);outline-offset:2px;}
 
-.checkbox-wrap{position:relative;width:22px;height:22px;flex-shrink:0;}
-.checkbox-wrap input[type=checkbox]{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer;}
-.item-check{position:absolute;inset:0;border-radius:5px;border:1.5px solid var(--line);pointer-events:none;transition:background .12s ease,border-color .12s ease;}
-input[type=checkbox]:checked+.item-check{background:var(--accent);border-color:var(--accent);}
-input[type=checkbox]:checked+.item-check::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg);}
-input[type=checkbox]:focus-visible+.item-check{outline:2px solid var(--accent);outline-offset:2px;}
+.item-body{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.item-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.item-name{font-size:14.5px;}
+.item-cb:checked~.item-body .item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
+.item-detail{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);white-space:nowrap;flex-shrink:0;}
+.item-bottom{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.item-sub{font-size:11px;color:var(--text-faint);}
+.item-cat{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;}
+.cat-explosive{background:var(--explosive-bg);color:var(--explosive);}
+.cat-strength{background:var(--strength-bg);color:var(--strength);}
+.cat-hypertrophy{background:var(--hyp-bg);color:var(--hyp);}
 
-.item-name{flex:1;font-size:15px;}
-input[type=checkbox]:checked~.item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
-.item-detail{font-family:var(--font-mono);font-size:12.5px;color:var(--text-faint);white-space:nowrap;}
+.lift-row{padding:0 6px 8px 40px;}
+.lift-display{background:none;border:none;padding:0;margin:0;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);cursor:pointer;text-align:left;}
+.lift-display:hover{color:var(--accent);}
+.lift-display b{color:var(--text-dim);font-weight:600;}
+.lift-edit{display:flex;align-items:center;gap:6px;margin-top:5px;}
+.lift-edit[hidden]{display:none;}
+.lift-w,.lift-r{width:58px;background:var(--bg-elev-2);border:1px solid var(--line);border-radius:5px;color:var(--text);font-family:var(--font-mono);font-size:12px;padding:5px 6px;}
+.lift-x{color:var(--text-faint);font-size:11px;}
+.lift-unit{color:var(--text-faint);font-size:10.5px;}
+.lift-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:5px;padding:5px 10px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;cursor:pointer;}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 @media (max-width:380px){.hdr-title{font-size:44px;}.day-title{font-size:19px;}}
@@ -100,87 +140,124 @@ input[type=checkbox]:checked~.item-name{color:var(--text-dim);text-decoration:li
     <p class="hdr-eyebrow">7-Day Camp</p>
     <h1 class="hdr-title">CAMP LOG</h1>
     <p class="hdr-range" id="weekRange"></p>
-    <div class="tally" id="tally"></div>
   </header>
+
+  <div class="sync-bar">
+    <button class="sync-btn" id="syncToggle" type="button">Sync setup</button>
+    <span class="sync-status" id="syncStatusText"></span>
+  </div>
+  <div class="sync-panel" id="syncPanel" hidden>
+    <p class="sync-help">One-time per device, so your weights follow you everywhere. Create a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a> scoped to this repo only, with <b>Contents: Read and write</b>, then fill this in.</p>
+    <div class="sync-field"><label>GitHub username</label><input id="cfgOwner" autocomplete="off"></div>
+    <div class="sync-field"><label>Repository name</label><input id="cfgRepo" autocomplete="off"></div>
+    <div class="sync-field"><label>Personal access token</label><input id="cfgToken" type="password" autocomplete="off"></div>
+    <div class="sync-actions">
+      <button class="sync-save" id="cfgSave" type="button">Connect</button>
+      <button class="sync-clear" id="cfgClear" type="button">Remove</button>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot explosive"></span>Explosive tempo · 5 max</span>
+    <span class="legend-item"><span class="legend-dot strength"></span>Strength · 8-10</span>
+    <span class="legend-item"><span class="legend-dot hypertrophy"></span>Hypertrophy · 12-20</span>
+  </div>
+  <div class="tally" id="tally"></div>
   <main id="days"></main>
 </div>
 
 <script>
 const STORAGE_KEY = 'campLogState';
+const SYNC_KEY = 'campLogSync';
+const LIFTS_LOCAL_KEY = 'campLogLifts';
+const LIFTS_PATH = 'lifts.json';
 
 const DAYS = [
-  { name:"Sunday", title:"Hypertrophy", tag:"moderate", tagLabel:"Moderate", time:"~50 min",
-    note:"Shoulders, arms, glutes & hamstrings. 2 sets to failure, keep moving.",
+  { name:"Sunday", title:"Push", meta:"9 exercises", time:"~50 min",
+    note:"Chest, shoulders, triceps — one move per head. Bench goes explosive; the rest stays controlled.",
     items:[
-      {name:"Seated DB Overhead Press", detail:"2 × failure", group:"Shoulders"},
-      {name:"Lateral Raise", detail:"2 × failure", group:"Shoulders"},
-      {name:"Face Pull", detail:"2 × failure", group:"Shoulders"},
-      {name:"Romanian Deadlift", detail:"2 × failure", group:"Posterior Chain"},
-      {name:"Hip Thrust", detail:"2 × failure", group:"Posterior Chain"},
-      {name:"Incline DB Curl", detail:"2 × failure", group:"Arms"},
-      {name:"Hammer Curl", detail:"2 × failure", group:"Arms"},
-      {name:"Cable Triceps Extension", detail:"2 × failure", group:"Arms"},
+      {name:"Incline DB Press", sub:"Upper chest", cat:"strength", detail:"2 x 8-10", group:"Chest"},
+      {name:"Flat Barbell Bench Press", sub:"Mid chest", cat:"explosive", detail:"2 x 5 max", group:"Chest"},
+      {name:"Weighted Dips", sub:"Lower chest", cat:"strength", detail:"2 x 8-10", group:"Chest"},
+      {name:"DB Front Raise", sub:"Front delt", cat:"hypertrophy", detail:"2 x 12-20", group:"Shoulders"},
+      {name:"DB Lateral Raise", sub:"Side delt", cat:"hypertrophy", detail:"2 x 12-20", group:"Shoulders"},
+      {name:"Face Pull", sub:"Rear delt", cat:"hypertrophy", detail:"2 x 12-20", group:"Shoulders"},
+      {name:"Close-Grip Bench Press", sub:"Long head", cat:"strength", detail:"2 x 8-10", group:"Triceps"},
+      {name:"Rope Pushdown", sub:"Lateral head", cat:"hypertrophy", detail:"2 x 12-20", group:"Triceps"},
+      {name:"Reverse-Grip Pushdown", sub:"Medial head", cat:"hypertrophy", detail:"2 x 12-20", group:"Triceps"},
     ]
   },
-  { name:"Monday", title:"Long-Term Cardio", tag:"moderate", tagLabel:"Moderate · Fasted", time:"45–50 min",
+  { name:"Monday", title:"Long-Term Cardio", meta:"Fasted", time:"45-50 min",
     note:"Zone 2 run. Conversational pace — if you can't talk, back off.",
     items:[
-      {name:"Run", detail:"45–50 min, Zone 2"},
+      {name:"Run", detail:"45-50 min, Zone 2"},
     ]
   },
-  { name:"Tuesday", title:"Explosive Power", tag:"high", tagLabel:"High", time:"~40–45 min",
-    note:"Full recovery between sets. Speed over volume.",
+  { name:"Tuesday", title:"Pull", meta:"9 exercises", time:"~50 min",
+    note:"Back and biceps — one move per head. Pull-ups go explosive; the rest stays controlled.",
     items:[
-      {name:"Box Jump / Broad Jump", detail:"4 × 5"},
-      {name:"Med Ball Rotational Throw", detail:"3 × 5/side"},
-      {name:"Med Ball Slam", detail:"3 × 5"},
-      {name:"Explosive KB Swing (full reset)", detail:"3 × 5"},
+      {name:"Pull-Ups", sub:"Lats, upper / vertical pull", cat:"explosive", detail:"2 x 5 max", group:"Back"},
+      {name:"Straight-Arm Pulldown", sub:"Lats, lower / diagonal pull", cat:"hypertrophy", detail:"2 x 12-20", group:"Back"},
+      {name:"Chest-Supported Row", sub:"Rhomboids", cat:"strength", detail:"2 x 8-10", group:"Back"},
+      {name:"Back Extension", sub:"Erector spinae", cat:"hypertrophy", detail:"2 x 12-20", group:"Back"},
+      {name:"DB Pullover", sub:"Teres major", cat:"hypertrophy", detail:"2 x 12-20", group:"Back"},
+      {name:"EZ-Bar Preacher Curl", sub:"Short head", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
+      {name:"Incline DB Curl", sub:"Long head", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
+      {name:"Hammer Curl", sub:"Brachialis", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
+      {name:"EZ-Bar Reverse Curl", sub:"Brachioradialis", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
     ]
   },
-  { name:"Wednesday", title:"Strength", tag:"high", tagLabel:"High", time:"~55 min",
-    note:"Chest, back & legs. Heavy triples, then one failure finisher each.",
+  { name:"Wednesday", title:"Leg", meta:"7 exercises", time:"~45 min",
+    note:"Quads, hamstrings, glutes — one move per head. Hip thrust goes explosive; RDL stays a rep short of failure.",
     items:[
-      {name:"Squat", detail:"3 × 5", group:"Main Lifts"},
-      {name:"Bench Press", detail:"3 × 5", group:"Main Lifts"},
-      {name:"Deadlift", detail:"3 × 5", group:"Main Lifts"},
-      {name:"Leg Extension / Leg Press", detail:"2 × failure", group:"Finishers"},
-      {name:"Incline DB Press / Cable Fly", detail:"2 × failure", group:"Finishers"},
-      {name:"Pull-Up (add weight if easy)", detail:"2 × failure", group:"Finishers"},
+      {name:"Leg Extension", sub:"Rectus femoris", cat:"hypertrophy", detail:"2 x 12-20", group:"Quads"},
+      {name:"Narrow-Stance Squats", sub:"Vastus lateralis", cat:"strength", detail:"2 x 8-10", group:"Quads"},
+      {name:"DB Step-Ups", sub:"Vastus medialis", cat:"strength", detail:"2 x 8-10", group:"Quads"},
+      {name:"Romanian Deadlift", sub:"Biceps femoris", cat:"strength", detail:"2 x 8-10, stop short of failure", group:"Hamstrings"},
+      {name:"Leg Curl", sub:"Semitendinosus / semimembranosus", cat:"hypertrophy", detail:"2 x 12-20", group:"Hamstrings"},
+      {name:"Barbell Hip Thrust", sub:"Glute max", cat:"explosive", detail:"2 x 5 max", group:"Glutes"},
+      {name:"Cable Hip Abduction", sub:"Glute medius", cat:"hypertrophy", detail:"2 x 12-20", group:"Glutes"},
     ]
   },
-  { name:"Thursday", title:"Short-Term Cardio", tag:"high", tagLabel:"High · Fasted", time:"~30–35 min",
+  { name:"Thursday", title:"Short-Term Cardio", meta:"Fasted", time:"~30-35 min",
     note:"5 rounds, 1 min rest between rounds. Move as fast as you can.",
     items:[
-      {name:"Kettlebell Swings", detail:"× 20"},
-      {name:"Burpees", detail:"× 15"},
-      {name:"Jump Lunges", detail:"× 12/leg"},
-      {name:"Push-Ups", detail:"× 20"},
+      {name:"Kettlebell Swings", detail:"x 20"},
+      {name:"Burpees", detail:"x 15"},
+      {name:"Jump Lunges", detail:"x 12/leg"},
+      {name:"Push-Ups", detail:"x 20"},
       {name:"Heavy Bag, all-out", detail:"30 sec"},
     ]
   },
-  { name:"Friday", title:"Rest", tag:"low", tagLabel:"Recovery", time:"—",
+  { name:"Friday", title:"Rest", meta:"", time:"\u2014",
     note:"Full rest. No lifting, no explosive work.",
     items:[]
   },
-  { name:"Saturday", title:"Deep Stretch + Accessory", tag:"low", tagLabel:"Recovery", time:"~40–45 min",
-    note:"Neck, traps, forearms, calves, abs, serratus — the stuff other days skip.",
+  { name:"Saturday", title:"Supplementary", meta:"17 exercises", time:"~55 min",
+    note:"Traps, neck, abs, forearms, calves — everything the other days skip. Superset flexor+extensor, neck front+back, and calf in+out to stay under an hour.",
     items:[
-      {name:"90/90 Hip Switches", detail:"flow", group:"Mobility"},
-      {name:"Couch Stretch", detail:"flow", group:"Mobility"},
-      {name:"Thoracic Rotations", detail:"flow", group:"Mobility"},
-      {name:"Banded Shoulder Dislocates", detail:"flow", group:"Mobility"},
-      {name:"Neck Circles", detail:"flow", group:"Mobility"},
-      {name:"Neck, 4-way resistance", detail:"3 ×", group:"Accessory"},
-      {name:"Farmer Carry", detail:"3 × 40m", group:"Accessory"},
-      {name:"Wrist Curl + Reverse Curl", detail:"2 × each", group:"Accessory"},
-      {name:"Standing Calf Raise", detail:"3 × 15", group:"Accessory"},
-      {name:"Hanging Leg Raise", detail:"3 × failure", group:"Accessory"},
-      {name:"Plank / Cable Rotation", detail:"2 × each", group:"Accessory"},
-      {name:"Scapular Push-Up / Landmine Press", detail:"2 × 12", group:"Accessory"},
+      {name:"Cable Crunch", sub:"Upper abs", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
+      {name:"Hanging Leg Raise", sub:"Lower abs", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
+      {name:"Russian Twists", sub:"Obliques", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
+      {name:"Push-Up Plus", sub:"Serratus anterior", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
+      {name:"Wrist Curls", sub:"Flexors", cat:"hypertrophy", detail:"2 x 12-20", group:"Forearms"},
+      {name:"Reverse Wrist Curls", sub:"Extensors", cat:"hypertrophy", detail:"2 x 12-20", group:"Forearms"},
+      {name:"DB Pronation / Supination", sub:"Pronators / supinators", cat:"hypertrophy", detail:"2 x 12-20", group:"Forearms"},
+      {name:"Farmer Carry", sub:"Grip", cat:"hypertrophy", detail:"2 x 30-40m", group:"Forearms"},
+      {name:"Neck Curl", sub:"Flexion, front", cat:"hypertrophy", detail:"2 x 12-20", group:"Neck"},
+      {name:"Neck Harness Extension", sub:"Extension, back", cat:"hypertrophy", detail:"2 x 12-20", group:"Neck"},
+      {name:'"Mike Tyson"', sub:"Front & back", cat:"hypertrophy", detail:"2 x 12-20", group:"Neck"},
+      {name:"Barbell / DB Shrugs", sub:"Upper traps", cat:"hypertrophy", detail:"2 x 12-20", group:"Traps"},
+      {name:"Face Pulls", sub:"Middle traps", cat:"hypertrophy", detail:"2 x 12-20", group:"Traps"},
+      {name:"Y-Raises", sub:"Lower traps", cat:"hypertrophy", detail:"2 x 12-20", group:"Traps"},
+      {name:"Standing Calf Raise", sub:"Inner, medial gastroc", cat:"hypertrophy", detail:"2 x 12-20", group:"Calves"},
+      {name:"Seated Calf Raise", sub:"Outer, lateral gastroc", cat:"hypertrophy", detail:"2 x 12-20", group:"Calves"},
+      {name:"Tib Raises", sub:"Tibialis anterior / shin", cat:"hypertrophy", detail:"2 x 12-20", group:"Calves"},
     ]
   },
 ];
 
+/* ---------- checkbox / completion state (local per device) ---------- */
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -188,9 +265,127 @@ function loadState(){
   }catch(e){ return {}; }
 }
 function persist(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ /* in-memory only this session */ }
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
 }
 
+/* ---------- lift data (weight / reps, last + best) ---------- */
+function loadLocalLifts(){
+  try{
+    const raw = localStorage.getItem(LIFTS_LOCAL_KEY);
+    return raw ? JSON.parse(raw) : {};
+  }catch(e){ return {}; }
+}
+function saveLocalLifts(){
+  try{ localStorage.setItem(LIFTS_LOCAL_KEY, JSON.stringify(liftData)); }catch(e){}
+}
+
+function b64EncodeUnicode(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(m,p)=>String.fromCharCode(parseInt(p,16))));
+}
+function b64DecodeUnicode(str){
+  return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+
+function getSyncConfig(){
+  try{ return JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ return null; }
+}
+function saveSyncConfig(cfg){
+  try{ localStorage.setItem(SYNC_KEY, JSON.stringify(cfg)); }catch(e){}
+}
+function clearSyncConfig(){
+  try{ localStorage.removeItem(SYNC_KEY); }catch(e){}
+}
+
+let liftsSha = null;
+let syncStatus = 'unconfigured';
+
+function ghHeaders(cfg){
+  return { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github+json' };
+}
+
+async function refreshSha(cfg){
+  try{
+    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${LIFTS_PATH}`, { headers: ghHeaders(cfg) });
+    if(res.ok){ const json = await res.json(); liftsSha = json.sha; }
+    else if(res.status===404){ liftsSha = null; }
+  }catch(e){}
+}
+
+async function fetchLiftsFromGitHub(){
+  const cfg = getSyncConfig();
+  if(!cfg || !cfg.owner || !cfg.repo || !cfg.token){ syncStatus='unconfigured'; renderSyncStatus(); return null; }
+  syncStatus = 'busy'; renderSyncStatus();
+  try{
+    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${LIFTS_PATH}`, { headers: ghHeaders(cfg) });
+    if(res.status===404){ liftsSha = null; syncStatus='ok'; renderSyncStatus(); return {}; }
+    if(!res.ok){ throw new Error(String(res.status)); }
+    const json = await res.json();
+    liftsSha = json.sha;
+    const content = b64DecodeUnicode(json.content.replace(/\n/g,''));
+    syncStatus = 'ok'; renderSyncStatus();
+    return JSON.parse(content);
+  }catch(e){
+    syncStatus = 'err'; renderSyncStatus();
+    return null;
+  }
+}
+
+async function pushLiftsToGitHub(retry){
+  const cfg = getSyncConfig();
+  if(!cfg || !cfg.owner || !cfg.repo || !cfg.token) return;
+  syncStatus = 'busy'; renderSyncStatus();
+  try{
+    const body = { message:'Update lift data', content: b64EncodeUnicode(JSON.stringify(liftData,null,2)) };
+    if(liftsSha) body.sha = liftsSha;
+    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${LIFTS_PATH}`, {
+      method:'PUT', headers:{...ghHeaders(cfg),'Content-Type':'application/json'}, body: JSON.stringify(body)
+    });
+    if(res.status===409 && retry!==false){
+      await refreshSha(cfg);
+      return pushLiftsToGitHub(false);
+    }
+    if(!res.ok){ throw new Error(String(res.status)); }
+    const json = await res.json();
+    liftsSha = json.content.sha;
+    syncStatus = 'ok';
+  }catch(e){
+    syncStatus = 'err';
+  }
+  renderSyncStatus();
+}
+
+function renderSyncStatus(){
+  const el = document.getElementById('syncStatusText');
+  if(!el) return;
+  el.className = 'sync-status';
+  if(syncStatus==='unconfigured'){ el.textContent = 'Not connected — set up once per device'; }
+  else if(syncStatus==='busy'){ el.textContent = 'Syncing...'; el.classList.add('busy'); }
+  else if(syncStatus==='ok'){ el.textContent = 'Synced'; el.classList.add('ok'); }
+  else if(syncStatus==='err'){ el.textContent = 'Sync error — check token / repo'; el.classList.add('err'); }
+}
+
+function liftDisplayText(rec){
+  if(!rec || rec.lastWeight==null){ return 'Tap to log weight & reps'; }
+  const last = `${rec.lastWeight}kg\u00d7${rec.lastReps}`;
+  const best = rec.bestWeight!=null ? `${rec.bestWeight}kg\u00d7${rec.bestReps}` : last;
+  return `Last <b>${last}</b>  \u00b7  Best <b>${best}</b>`;
+}
+
+function saveLift(exName, weight, reps){
+  if(weight==null || isNaN(weight)) return;
+  if(!liftData[exName]) liftData[exName] = {};
+  const rec = liftData[exName];
+  rec.lastWeight = weight;
+  rec.lastReps = reps;
+  if(rec.bestWeight == null || weight > rec.bestWeight){
+    rec.bestWeight = weight;
+    rec.bestReps = reps;
+  }
+  saveLocalLifts();
+  pushLiftsToGitHub(true);
+}
+
+/* ---------- date helpers ---------- */
 function startOfWeek(d){
   const date = new Date(d);
   date.setHours(0,0,0,0);
@@ -223,12 +418,58 @@ function dayCompletion(day, dayState){
   return {done, total, complete: done===total};
 }
 
+function catLabel(cat){
+  if(cat==='explosive') return 'Explosive Tempo';
+  if(cat==='strength') return 'Strength';
+  if(cat==='hypertrophy') return 'Hypertrophy';
+  return '';
+}
+
+function itemRowHTML(it, idx, dayState, key){
+  const checked = dayState[idx] ? 'checked' : '';
+  const hasMeta = it.sub || it.cat;
+  const bottom = hasMeta ? `
+        <span class="item-bottom">
+          ${it.sub ? `<span class="item-sub">${it.sub}</span>` : ''}
+          ${it.cat ? `<span class="item-cat cat-${it.cat}">${catLabel(it.cat)}</span>` : ''}
+        </span>` : '';
+  let liftHTML = '';
+  if(it.cat){
+    const rec = liftData[it.name];
+    liftHTML = `
+    <div class="lift-row" data-ex="${it.name}">
+      <button class="lift-display" type="button">${liftDisplayText(rec)}</button>
+      <div class="lift-edit" hidden>
+        <input class="lift-w" type="number" step="any" inputmode="decimal" placeholder="${rec&&rec.lastWeight!=null?rec.lastWeight:'kg'}">
+        <span class="lift-unit">kg</span>
+        <span class="lift-x">\u00d7</span>
+        <input class="lift-r" type="number" step="1" inputmode="numeric" placeholder="${rec&&rec.lastReps!=null?rec.lastReps:'reps'}">
+        <button class="lift-save" type="button">Save</button>
+      </div>
+    </div>`;
+  }
+  return `
+    <li class="item">
+      <label class="item-row">
+        <input type="checkbox" class="item-cb" ${checked} data-key="${key}" data-idx="${idx}">
+        <span class="item-check"></span>
+        <span class="item-body">
+          <span class="item-top">
+            <span class="item-name">${it.name}</span>
+            <span class="item-detail">${it.detail}</span>
+          </span>${bottom}
+        </span>
+      </label>${liftHTML}
+    </li>`;
+}
+
 function render(){
   const today = new Date();
   const weekStart = startOfWeek(today);
   const todayKey = dateKey(today);
 
   document.getElementById('weekRange').textContent = fmtWeekRange(weekStart);
+  renderSyncStatus();
 
   const tallyEl = document.getElementById('tally');
   const daysEl = document.getElementById('days');
@@ -249,7 +490,7 @@ function render(){
     tallyEl.appendChild(mark);
 
     const details = document.createElement('details');
-    details.className = `day tag-${day.tag}` + (comp.complete?' is-complete':'') + (isToday?' is-today':'');
+    details.className = 'day' + (comp.complete?' is-complete':'') + (isToday?' is-today':'');
     if(openKeys.has(key)) details.open = true;
 
     const summary = document.createElement('summary');
@@ -261,7 +502,7 @@ function render(){
       </div>
       <div class="day-hdr-mid">
         <h2 class="day-title">${day.title}</h2>
-        <span class="tag">${day.tagLabel}</span>
+        ${day.meta ? `<span class="day-meta">${day.meta}</span>` : ''}
       </div>
       <div class="day-hdr-right">
         <span class="day-progress">${comp.done}/${comp.total}</span>
@@ -285,37 +526,23 @@ function render(){
       const row = document.createElement('label');
       row.className = 'item-row';
       row.innerHTML = `
-        <span class="checkbox-wrap">
-          <input type="checkbox" ${dayState.rested?'checked':''} data-key="${key}" data-rest="1">
-          <span class="item-check"></span>
-        </span>
-        <span class="item-name">Rested today</span>`;
+        <input type="checkbox" class="item-cb" ${dayState.rested?'checked':''} data-key="${key}" data-rest="1">
+        <span class="item-check"></span>
+        <span class="item-body"><span class="item-top"><span class="item-name">Rested today</span></span></span>`;
       body.appendChild(row);
     } else {
       const ul = document.createElement('ul');
       ul.className = 'items';
       let lastGroup = null;
+      let html = '';
       day.items.forEach((it, idx)=>{
         if(it.group && it.group!==lastGroup){
-          const gl = document.createElement('li');
-          gl.className = 'group-label';
-          gl.textContent = it.group;
-          ul.appendChild(gl);
+          html += `<li class="group-label">${it.group}</li>`;
           lastGroup = it.group;
         }
-        const li = document.createElement('li');
-        li.className = 'item';
-        li.innerHTML = `
-          <label class="item-row">
-            <span class="checkbox-wrap">
-              <input type="checkbox" ${dayState[idx]?'checked':''} data-key="${key}" data-idx="${idx}">
-              <span class="item-check"></span>
-            </span>
-            <span class="item-name">${it.name}</span>
-            <span class="item-detail">${it.detail}</span>
-          </label>`;
-        ul.appendChild(li);
+        html += itemRowHTML(it, idx, dayState, key);
       });
+      ul.innerHTML = html;
       body.appendChild(ul);
     }
 
@@ -323,8 +550,29 @@ function render(){
     daysEl.appendChild(details);
   });
 
-  daysEl.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+  daysEl.querySelectorAll('input.item-cb').forEach(cb=>{
     cb.addEventListener('change', onToggle);
+  });
+
+  daysEl.querySelectorAll('.lift-display').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const editEl = btn.nextElementSibling;
+      editEl.hidden = !editEl.hidden;
+      if(!editEl.hidden){ editEl.querySelector('.lift-w').focus(); }
+    });
+  });
+
+  daysEl.querySelectorAll('.lift-save').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const row = btn.closest('.lift-row');
+      const exName = row.dataset.ex;
+      const w = parseFloat(row.querySelector('.lift-w').value);
+      const rRaw = row.querySelector('.lift-r').value;
+      const r = rRaw==='' ? (liftData[exName]&&liftData[exName].lastReps!=null?liftData[exName].lastReps:null) : parseInt(rRaw,10);
+      if(isNaN(w)) return;
+      saveLift(exName, w, r);
+      render();
+    });
   });
 }
 
@@ -341,9 +589,55 @@ function onToggle(e){
   render();
 }
 
+/* ---------- sync panel wiring ---------- */
+function initSyncUI(){
+  const toggle = document.getElementById('syncToggle');
+  const panel = document.getElementById('syncPanel');
+  const cfg = getSyncConfig() || {};
+  document.getElementById('cfgOwner').value = cfg.owner || '';
+  document.getElementById('cfgRepo').value = cfg.repo || '';
+  document.getElementById('cfgToken').value = cfg.token || '';
+
+  toggle.addEventListener('click', ()=>{ panel.hidden = !panel.hidden; });
+
+  document.getElementById('cfgSave').addEventListener('click', async ()=>{
+    const owner = document.getElementById('cfgOwner').value.trim();
+    const repo = document.getElementById('cfgRepo').value.trim();
+    const token = document.getElementById('cfgToken').value.trim();
+    if(!owner || !repo || !token) return;
+    saveSyncConfig({owner, repo, token});
+    panel.hidden = true;
+    const remote = await fetchLiftsFromGitHub();
+    if(remote){
+      liftData = remote;
+      saveLocalLifts();
+      render();
+    }
+  });
+
+  document.getElementById('cfgClear').addEventListener('click', ()=>{
+    clearSyncConfig();
+    liftsSha = null;
+    syncStatus = 'unconfigured';
+    document.getElementById('cfgOwner').value = '';
+    document.getElementById('cfgRepo').value = '';
+    document.getElementById('cfgToken').value = '';
+    renderSyncStatus();
+  });
+}
+
 let state = loadState();
+let liftData = loadLocalLifts();
 let openKeys = new Set([dateKey(new Date())]);
+initSyncUI();
 render();
+fetchLiftsFromGitHub().then(remote=>{
+  if(remote){
+    liftData = remote;
+    saveLocalLifts();
+    render();
+  }
+});
 </script>
 </body>
 </html>
