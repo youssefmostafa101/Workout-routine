@@ -38,27 +38,11 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 .hdr-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--accent);margin:0 0 6px;text-transform:uppercase;}
 .hdr-title{font-family:var(--font-display);font-size:54px;letter-spacing:.02em;margin:0;line-height:1;}
 .hdr-range{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin:10px 0 0;}
-
-.sync-bar{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0;flex-wrap:wrap;}
-.sync-btn{background:var(--bg-elev);border:1px solid var(--line);color:var(--text-dim);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.04em;padding:6px 10px;border-radius:6px;cursor:pointer;}
-.sync-btn:hover{border-color:var(--accent);color:var(--text);}
-.sync-status{font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);}
+.sync-status{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;color:var(--text-faint);margin:6px 0 0;}
 .sync-status.ok{color:var(--hyp);}
 .sync-status.err{color:var(--explosive);}
-.sync-status.busy{color:var(--strength);}
 
-.sync-panel{max-width:440px;margin:0 auto 18px;background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;}
-.sync-panel[hidden]{display:none;}
-.sync-help{font-size:12px;color:var(--text-dim);margin:0 0 10px;line-height:1.5;}
-.sync-help a{color:var(--accent);}
-.sync-field{display:flex;flex-direction:column;gap:3px;margin-bottom:8px;}
-.sync-field label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-faint);}
-.sync-field input{background:var(--bg-elev-2);border:1px solid var(--line);border-radius:6px;color:var(--text);font-family:var(--font-body);font-size:13.5px;padding:8px 10px;}
-.sync-actions{display:flex;gap:8px;margin-top:10px;}
-.sync-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:6px;padding:8px 14px;font-family:var(--font-mono);font-size:11.5px;font-weight:600;cursor:pointer;}
-.sync-clear{background:none;border:1px solid var(--line);color:var(--text-dim);border-radius:6px;padding:8px 14px;font-family:var(--font-mono);font-size:11.5px;cursor:pointer;}
-
-.legend{display:flex;justify-content:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.legend{display:flex;justify-content:center;gap:14px;margin:20px 0 22px;flex-wrap:wrap;}
 .legend-item{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);}
 .legend-dot{width:8px;height:8px;border-radius:50%;}
 .legend-dot.explosive{background:var(--explosive);}
@@ -99,18 +83,12 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 .group-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);padding:10px 6px 4px;}
 .items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;}
 
-.item-row{display:grid;grid-template-columns:22px 1fr;column-gap:12px;align-items:center;padding:9px 6px;border-radius:8px;cursor:pointer;}
-.item-row:hover{background:var(--bg-elev-2);}
-.item-cb{grid-column:1;grid-row:1;width:22px;height:22px;margin:0;opacity:0;cursor:pointer;}
-.item-check{grid-column:1;grid-row:1;position:relative;width:22px;height:22px;border-radius:5px;border:1.5px solid var(--line);pointer-events:none;transition:background .12s ease,border-color .12s ease;}
-.item-cb:checked+.item-check{background:var(--accent);border-color:var(--accent);}
-.item-cb:checked+.item-check::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid var(--accent-ink);border-width:0 2px 2px 0;transform:rotate(45deg);}
-.item-cb:focus-visible+.item-check{outline:2px solid var(--accent);outline-offset:2px;}
-
-.item-body{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:3px;min-width:0;}
+.item{padding:8px 6px;border-radius:8px;}
+.item-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
 .item-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
 .item-name{font-size:14.5px;}
-.item-cb:checked~.item-body .item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
+.item.is-done .item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
 .item-detail{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);white-space:nowrap;flex-shrink:0;}
 .item-bottom{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .item-sub{font-size:11px;color:var(--text-faint);}
@@ -119,7 +97,13 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 .cat-strength{background:var(--strength-bg);color:var(--strength);}
 .cat-hypertrophy{background:var(--hyp-bg);color:var(--hyp);}
 
-.lift-row{padding:0 6px 8px 40px;}
+.set-boxes{display:flex;gap:6px;flex-shrink:0;margin-top:1px;}
+.set-box{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--line);background:var(--bg-elev-2);color:var(--text-faint);font-family:var(--font-mono);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
+.set-box:hover{border-color:var(--accent);}
+.set-box.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
+.set-box:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+.lift-row{padding:6px 6px 4px 6px;}
 .lift-display{background:none;border:none;padding:0;margin:0;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);cursor:pointer;text-align:left;}
 .lift-display:hover{color:var(--accent);}
 .lift-display b{color:var(--text-dim);font-weight:600;}
@@ -131,7 +115,7 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 .lift-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:5px;padding:5px 10px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;cursor:pointer;}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
-@media (max-width:380px){.hdr-title{font-size:44px;}.day-title{font-size:19px;}}
+@media (max-width:380px){.hdr-title{font-size:44px;}.day-title{font-size:19px;}.set-box{width:24px;height:24px;}}
 </style>
 </head>
 <body>
@@ -140,22 +124,8 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
     <p class="hdr-eyebrow">7-Day Camp</p>
     <h1 class="hdr-title">CAMP LOG</h1>
     <p class="hdr-range" id="weekRange"></p>
+    <p class="sync-status" id="syncStatusText"></p>
   </header>
-
-  <div class="sync-bar">
-    <button class="sync-btn" id="syncToggle" type="button">Sync setup</button>
-    <span class="sync-status" id="syncStatusText"></span>
-  </div>
-  <div class="sync-panel" id="syncPanel" hidden>
-    <p class="sync-help">One-time per device, so your weights follow you everywhere. Create a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a> scoped to this repo only, with <b>Contents: Read and write</b>, then fill this in.</p>
-    <div class="sync-field"><label>GitHub username</label><input id="cfgOwner" autocomplete="off"></div>
-    <div class="sync-field"><label>Repository name</label><input id="cfgRepo" autocomplete="off"></div>
-    <div class="sync-field"><label>Personal access token</label><input id="cfgToken" type="password" autocomplete="off"></div>
-    <div class="sync-actions">
-      <button class="sync-save" id="cfgSave" type="button">Connect</button>
-      <button class="sync-clear" id="cfgClear" type="button">Remove</button>
-    </div>
-  </div>
 
   <div class="legend">
     <span class="legend-item"><span class="legend-dot explosive"></span>Explosive tempo · 5 max</span>
@@ -167,24 +137,31 @@ body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:
 </div>
 
 <script>
+/* ============================================================
+   ONE-TIME SETUP: paste your Pantry ID below (see chat for how
+   to get one — takes about 30 seconds, no password, just an ID).
+   Every device that loads this page will then read/write the
+   same shared data automatically. Nothing else to configure.
+   ============================================================ */
+const PANTRY_ID = "PASTE_YOUR_PANTRY_ID_HERE";
+const BASKET_NAME = "camplog-lifts";
+
 const STORAGE_KEY = 'campLogState';
-const SYNC_KEY = 'campLogSync';
 const LIFTS_LOCAL_KEY = 'campLogLifts';
-const LIFTS_PATH = 'lifts.json';
 
 const DAYS = [
   { name:"Sunday", title:"Push", meta:"9 exercises", time:"~50 min",
     note:"Chest, shoulders, triceps — one move per head. Bench goes explosive; the rest stays controlled.",
     items:[
-      {name:"Incline DB Press", sub:"Upper chest", cat:"strength", detail:"2 x 8-10", group:"Chest"},
-      {name:"Flat Barbell Bench Press", sub:"Mid chest", cat:"explosive", detail:"2 x 5 max", group:"Chest"},
-      {name:"Weighted Dips", sub:"Lower chest", cat:"strength", detail:"2 x 8-10", group:"Chest"},
-      {name:"DB Front Raise", sub:"Front delt", cat:"hypertrophy", detail:"2 x 12-20", group:"Shoulders"},
-      {name:"DB Lateral Raise", sub:"Side delt", cat:"hypertrophy", detail:"2 x 12-20", group:"Shoulders"},
-      {name:"Face Pull", sub:"Rear delt", cat:"hypertrophy", detail:"2 x 12-20", group:"Shoulders"},
-      {name:"Close-Grip Bench Press", sub:"Long head", cat:"strength", detail:"2 x 8-10", group:"Triceps"},
-      {name:"Rope Pushdown", sub:"Lateral head", cat:"hypertrophy", detail:"2 x 12-20", group:"Triceps"},
-      {name:"Reverse-Grip Pushdown", sub:"Medial head", cat:"hypertrophy", detail:"2 x 12-20", group:"Triceps"},
+      {name:"Incline DB Press", sub:"Upper chest", cat:"strength", sets:2, detail:"2 x 8-10", group:"Chest"},
+      {name:"Flat Barbell Bench Press", sub:"Mid chest", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Chest"},
+      {name:"Weighted Dips", sub:"Lower chest", cat:"strength", sets:2, detail:"2 x 8-10", group:"Chest"},
+      {name:"DB Front Raise", sub:"Front delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
+      {name:"DB Lateral Raise", sub:"Side delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
+      {name:"Face Pull", sub:"Rear delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
+      {name:"Close-Grip Bench Press", sub:"Long head", cat:"strength", sets:2, detail:"2 x 8-10", group:"Triceps"},
+      {name:"Rope Pushdown", sub:"Lateral head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Triceps"},
+      {name:"Reverse-Grip Pushdown", sub:"Medial head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Triceps"},
     ]
   },
   { name:"Monday", title:"Long-Term Cardio", meta:"Fasted", time:"45-50 min",
@@ -196,30 +173,34 @@ const DAYS = [
   { name:"Tuesday", title:"Pull", meta:"9 exercises", time:"~50 min",
     note:"Back and biceps — one move per head. Pull-ups go explosive; the rest stays controlled.",
     items:[
-      {name:"Pull-Ups", sub:"Lats, upper / vertical pull", cat:"explosive", detail:"2 x 5 max", group:"Back"},
-      {name:"Straight-Arm Pulldown", sub:"Lats, lower / diagonal pull", cat:"hypertrophy", detail:"2 x 12-20", group:"Back"},
-      {name:"Chest-Supported Row", sub:"Rhomboids", cat:"strength", detail:"2 x 8-10", group:"Back"},
-      {name:"Back Extension", sub:"Erector spinae", cat:"hypertrophy", detail:"2 x 12-20", group:"Back"},
-      {name:"DB Pullover", sub:"Teres major", cat:"hypertrophy", detail:"2 x 12-20", group:"Back"},
-      {name:"EZ-Bar Preacher Curl", sub:"Short head", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
-      {name:"Incline DB Curl", sub:"Long head", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
-      {name:"Hammer Curl", sub:"Brachialis", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
-      {name:"EZ-Bar Reverse Curl", sub:"Brachioradialis", cat:"hypertrophy", detail:"2 x 12-20", group:"Biceps"},
+      {name:"Pull-Ups", sub:"Lats, upper / vertical pull", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Back"},
+      {name:"Straight-Arm Pulldown", sub:"Lats, lower / diagonal pull", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
+      {name:"Chest-Supported Row", sub:"Rhomboids", cat:"strength", sets:2, detail:"2 x 8-10", group:"Back"},
+      {name:"Back Extension", sub:"Erector spinae", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
+      {name:"DB Pullover", sub:"Teres major", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
+      {name:"EZ-Bar Preacher Curl", sub:"Short head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
+      {name:"Incline DB Curl", sub:"Long head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
+      {name:"Hammer Curl", sub:"Brachialis", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
+      {name:"EZ-Bar Reverse Curl", sub:"Brachioradialis", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
     ]
   },
   { name:"Wednesday", title:"Leg", meta:"7 exercises", time:"~45 min",
     note:"Quads, hamstrings, glutes — one move per head. Hip thrust goes explosive; RDL stays a rep short of failure.",
     items:[
-      {name:"Leg Extension", sub:"Rectus femoris", cat:"hypertrophy", detail:"2 x 12-20", group:"Quads"},
-      {name:"Narrow-Stance Squats", sub:"Vastus lateralis", cat:"strength", detail:"2 x 8-10", group:"Quads"},
-      {name:"DB Step-Ups", sub:"Vastus medialis", cat:"strength", detail:"2 x 8-10", group:"Quads"},
-      {name:"Romanian Deadlift", sub:"Biceps femoris", cat:"strength", detail:"2 x 8-10, stop short of failure", group:"Hamstrings"},
-      {name:"Leg Curl", sub:"Semitendinosus / semimembranosus", cat:"hypertrophy", detail:"2 x 12-20", group:"Hamstrings"},
-      {name:"Barbell Hip Thrust", sub:"Glute max", cat:"explosive", detail:"2 x 5 max", group:"Glutes"},
-      {name:"Cable Hip Abduction", sub:"Glute medius", cat:"hypertrophy", detail:"2 x 12-20", group:"Glutes"},
+      {name:"Leg Extension", sub:"Rectus femoris", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Quads"},
+      {name:"Narrow-Stance Squats", sub:"Vastus lateralis", cat:"strength", sets:2, detail:"2 x 8-10", group:"Quads"},
+      {name:"Bulgarian Split Squats", sub:"Vastus medialis", cat:"strength", sets:2, detail:"2 x 8-10", group:"Quads"},
+      {name:"Romanian Deadlift", sub:"Biceps femoris", cat:"strength", sets:2, detail:"2 x 8-10, stop short of failure", group:"Hamstrings"},
+      {name:"Leg Curl", sub:"Semitendinosus / semimembranosus", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Hamstrings"},
+      {name:"Barbell Hip Thrust", sub:"Glute max", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Glutes"},
+      {name:"Lying Side Leg Raises (Alt: Cable Hip Abduction)", sub:"Glute medius", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Glutes"},
     ]
   },
-  { name:"Thursday", title:"Short-Term Cardio", meta:"Fasted", time:"~30-35 min",
+  { name:"Thursday", title:"Rest", meta:"", time:"\u2014",
+    note:"Full rest. No lifting, no explosive work.",
+    items:[]
+  },
+  { name:"Friday", title:"Short-Term Cardio", meta:"", time:"~30-35 min",
     note:"5 rounds, 1 min rest between rounds. Move as fast as you can.",
     items:[
       {name:"Kettlebell Swings", detail:"x 20"},
@@ -229,139 +210,98 @@ const DAYS = [
       {name:"Heavy Bag, all-out", detail:"30 sec"},
     ]
   },
-  { name:"Friday", title:"Rest", meta:"", time:"\u2014",
-    note:"Full rest. No lifting, no explosive work.",
-    items:[]
-  },
   { name:"Saturday", title:"Supplementary", meta:"17 exercises", time:"~55 min",
     note:"Traps, neck, abs, forearms, calves — everything the other days skip. Superset flexor+extensor, neck front+back, and calf in+out to stay under an hour.",
     items:[
-      {name:"Cable Crunch", sub:"Upper abs", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
-      {name:"Hanging Leg Raise", sub:"Lower abs", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
-      {name:"Russian Twists", sub:"Obliques", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
-      {name:"Push-Up Plus", sub:"Serratus anterior", cat:"hypertrophy", detail:"2 x 12-20", group:"Abs"},
-      {name:"Wrist Curls", sub:"Flexors", cat:"hypertrophy", detail:"2 x 12-20", group:"Forearms"},
-      {name:"Reverse Wrist Curls", sub:"Extensors", cat:"hypertrophy", detail:"2 x 12-20", group:"Forearms"},
-      {name:"DB Pronation / Supination", sub:"Pronators / supinators", cat:"hypertrophy", detail:"2 x 12-20", group:"Forearms"},
-      {name:"Farmer Carry", sub:"Grip", cat:"hypertrophy", detail:"2 x 30-40m", group:"Forearms"},
-      {name:"Neck Curl", sub:"Flexion, front", cat:"hypertrophy", detail:"2 x 12-20", group:"Neck"},
-      {name:"Neck Harness Extension", sub:"Extension, back", cat:"hypertrophy", detail:"2 x 12-20", group:"Neck"},
-      {name:'"Mike Tyson"', sub:"Front & back", cat:"hypertrophy", detail:"2 x 12-20", group:"Neck"},
-      {name:"Barbell / DB Shrugs", sub:"Upper traps", cat:"hypertrophy", detail:"2 x 12-20", group:"Traps"},
-      {name:"Face Pulls", sub:"Middle traps", cat:"hypertrophy", detail:"2 x 12-20", group:"Traps"},
-      {name:"Y-Raises", sub:"Lower traps", cat:"hypertrophy", detail:"2 x 12-20", group:"Traps"},
-      {name:"Standing Calf Raise", sub:"Inner, medial gastroc", cat:"hypertrophy", detail:"2 x 12-20", group:"Calves"},
-      {name:"Seated Calf Raise", sub:"Outer, lateral gastroc", cat:"hypertrophy", detail:"2 x 12-20", group:"Calves"},
-      {name:"Tib Raises", sub:"Tibialis anterior / shin", cat:"hypertrophy", detail:"2 x 12-20", group:"Calves"},
+      {name:"Cable Crunch", sub:"Upper abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Hanging Leg Raise", sub:"Lower abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Russian Twists", sub:"Obliques", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Push-Up Plus", sub:"Serratus anterior", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Wrist Curls", sub:"Flexors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
+      {name:"Reverse Wrist Curls", sub:"Extensors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
+      {name:"DB Pronation / Supination", sub:"Pronators / supinators", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
+      {name:"Farmer Carry", sub:"Grip", cat:"hypertrophy", sets:2, detail:"2 x 30-40m", group:"Forearms"},
+      {name:"Neck Curl", sub:"Flexion, front", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
+      {name:"Neck Harness Extension", sub:"Extension, back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
+      {name:'"Mike Tyson"', sub:"Front & back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
+      {name:"Barbell / DB Shrugs", sub:"Upper traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
+      {name:"Face Pulls", sub:"Middle traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
+      {name:"Y-Raises", sub:"Lower traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
+      {name:"Standing Calf Raise", sub:"Inner, medial gastroc", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
+      {name:"Seated Calf Raise", sub:"Outer, lateral gastroc", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
+      {name:"Tib Raises", sub:"Tibialis anterior / shin", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
     ]
   },
 ];
 
 /* ---------- checkbox / completion state (local per device) ---------- */
 function loadState(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
-  }catch(e){ return {}; }
+  try{ const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
 }
 function persist(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
 }
 
-/* ---------- lift data (weight / reps, last + best) ---------- */
+/* ---------- lift data (weight / reps, last + best), synced via Pantry ---------- */
 function loadLocalLifts(){
-  try{
-    const raw = localStorage.getItem(LIFTS_LOCAL_KEY);
-    return raw ? JSON.parse(raw) : {};
-  }catch(e){ return {}; }
+  try{ const raw = localStorage.getItem(LIFTS_LOCAL_KEY); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
 }
 function saveLocalLifts(){
   try{ localStorage.setItem(LIFTS_LOCAL_KEY, JSON.stringify(liftData)); }catch(e){}
 }
 
-function b64EncodeUnicode(str){
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,(m,p)=>String.fromCharCode(parseInt(p,16))));
-}
-function b64DecodeUnicode(str){
-  return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+function isUnconfigured(){
+  return !PANTRY_ID || PANTRY_ID.indexOf('PASTE_YOUR')===0;
 }
 
-function getSyncConfig(){
-  try{ return JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){ return null; }
-}
-function saveSyncConfig(cfg){
-  try{ localStorage.setItem(SYNC_KEY, JSON.stringify(cfg)); }catch(e){}
-}
-function clearSyncConfig(){
-  try{ localStorage.removeItem(SYNC_KEY); }catch(e){}
-}
-
-let liftsSha = null;
+const PANTRY_URL = `https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${BASKET_NAME}`;
 let syncStatus = 'unconfigured';
 
-function ghHeaders(cfg){
-  return { 'Authorization': `token ${cfg.token}`, 'Accept': 'application/vnd.github+json' };
+function renderSyncStatus(){
+  const el = document.getElementById('syncStatusText');
+  if(!el) return;
+  el.className = 'sync-status';
+  if(isUnconfigured()){ el.textContent = 'Not set up yet \u2014 see chat for the one-time step'; }
+  else if(syncStatus==='busy'){ el.textContent = 'Saving...'; }
+  else if(syncStatus==='ok'){ el.textContent = 'Synced'; el.classList.add('ok'); }
+  else if(syncStatus==='err'){ el.textContent = 'Couldn\u2019t reach storage \u2014 saved on this device only'; el.classList.add('err'); }
+  else { el.textContent = ''; }
 }
 
-async function refreshSha(cfg){
-  try{
-    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${LIFTS_PATH}`, { headers: ghHeaders(cfg) });
-    if(res.ok){ const json = await res.json(); liftsSha = json.sha; }
-    else if(res.status===404){ liftsSha = null; }
-  }catch(e){}
-}
-
-async function fetchLiftsFromGitHub(){
-  const cfg = getSyncConfig();
-  if(!cfg || !cfg.owner || !cfg.repo || !cfg.token){ syncStatus='unconfigured'; renderSyncStatus(); return null; }
+async function fetchLiftsFromPantry(){
+  if(isUnconfigured()){ renderSyncStatus(); return null; }
   syncStatus = 'busy'; renderSyncStatus();
   try{
-    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${LIFTS_PATH}`, { headers: ghHeaders(cfg) });
-    if(res.status===404){ liftsSha = null; syncStatus='ok'; renderSyncStatus(); return {}; }
-    if(!res.ok){ throw new Error(String(res.status)); }
+    const res = await fetch(PANTRY_URL);
+    if(!res.ok){
+      syncStatus = res.status===400 ? 'ok' : 'err';
+      renderSyncStatus();
+      return {};
+    }
     const json = await res.json();
-    liftsSha = json.sha;
-    const content = b64DecodeUnicode(json.content.replace(/\n/g,''));
+    delete json._metadata;
     syncStatus = 'ok'; renderSyncStatus();
-    return JSON.parse(content);
+    return json;
   }catch(e){
     syncStatus = 'err'; renderSyncStatus();
     return null;
   }
 }
 
-async function pushLiftsToGitHub(retry){
-  const cfg = getSyncConfig();
-  if(!cfg || !cfg.owner || !cfg.repo || !cfg.token) return;
+async function pushLiftsToPantry(){
+  if(isUnconfigured()) return;
   syncStatus = 'busy'; renderSyncStatus();
   try{
-    const body = { message:'Update lift data', content: b64EncodeUnicode(JSON.stringify(liftData,null,2)) };
-    if(liftsSha) body.sha = liftsSha;
-    const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${LIFTS_PATH}`, {
-      method:'PUT', headers:{...ghHeaders(cfg),'Content-Type':'application/json'}, body: JSON.stringify(body)
+    const res = await fetch(PANTRY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(liftData)
     });
-    if(res.status===409 && retry!==false){
-      await refreshSha(cfg);
-      return pushLiftsToGitHub(false);
-    }
-    if(!res.ok){ throw new Error(String(res.status)); }
-    const json = await res.json();
-    liftsSha = json.content.sha;
-    syncStatus = 'ok';
+    syncStatus = res.ok ? 'ok' : 'err';
   }catch(e){
     syncStatus = 'err';
   }
   renderSyncStatus();
-}
-
-function renderSyncStatus(){
-  const el = document.getElementById('syncStatusText');
-  if(!el) return;
-  el.className = 'sync-status';
-  if(syncStatus==='unconfigured'){ el.textContent = 'Not connected — set up once per device'; }
-  else if(syncStatus==='busy'){ el.textContent = 'Syncing...'; el.classList.add('busy'); }
-  else if(syncStatus==='ok'){ el.textContent = 'Synced'; el.classList.add('ok'); }
-  else if(syncStatus==='err'){ el.textContent = 'Sync error — check token / repo'; el.classList.add('err'); }
 }
 
 function liftDisplayText(rec){
@@ -382,7 +322,7 @@ function saveLift(exName, weight, reps){
     rec.bestReps = reps;
   }
   saveLocalLifts();
-  pushLiftsToGitHub(true);
+  pushLiftsToPantry();
 }
 
 /* ---------- date helpers ---------- */
@@ -396,9 +336,7 @@ function dateKey(d){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
   return `${y}-${m}-${day}`;
 }
-function fmtCardDate(d){
-  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase();
-}
+function fmtCardDate(d){ return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase(); }
 function fmtWeekRange(start){
   const end = new Date(start);
   end.setDate(start.getDate()+6);
@@ -408,14 +346,24 @@ function fmtWeekRange(start){
   return `Week of ${startStr}\u2013${endStr}`;
 }
 
+/* ---------- set-level completion ---------- */
+function setsFor(it){ return it.sets || 1; }
+function doneCountFor(it, idx, dayState){
+  const arr = (dayState && dayState[idx]) || [];
+  return arr.filter(Boolean).length;
+}
 function dayCompletion(day, dayState){
   if(day.items.length===0){
     const done = !!(dayState && dayState.rested);
     return {done: done?1:0, total:1, complete:done};
   }
-  const total = day.items.length;
-  const done = day.items.filter((_,idx)=> dayState && dayState[idx]).length;
-  return {done, total, complete: done===total};
+  let total=0, done=0;
+  day.items.forEach((it,idx)=>{
+    const n = setsFor(it);
+    total += n;
+    done += doneCountFor(it, idx, dayState);
+  });
+  return {done, total, complete: total>0 && done===total};
 }
 
 function catLabel(cat){
@@ -426,13 +374,21 @@ function catLabel(cat){
 }
 
 function itemRowHTML(it, idx, dayState, key){
-  const checked = dayState[idx] ? 'checked' : '';
+  const n = setsFor(it);
+  const doneN = doneCountFor(it, idx, dayState);
+  const allDone = doneN === n;
+  const doneArr = (dayState && dayState[idx]) || [];
   const hasMeta = it.sub || it.cat;
   const bottom = hasMeta ? `
-        <span class="item-bottom">
+        <div class="item-bottom">
           ${it.sub ? `<span class="item-sub">${it.sub}</span>` : ''}
           ${it.cat ? `<span class="item-cat cat-${it.cat}">${catLabel(it.cat)}</span>` : ''}
-        </span>` : '';
+        </div>` : '';
+  let boxes = '';
+  for(let s=0; s<n; s++){
+    const d = !!doneArr[s];
+    boxes += `<button type="button" class="set-box${d?' is-done':''}" data-key="${key}" data-idx="${idx}" data-set="${s}">${n>1 ? (s+1) : '\u2713'}</button>`;
+  }
   let liftHTML = '';
   if(it.cat){
     const rec = liftData[it.name];
@@ -449,17 +405,16 @@ function itemRowHTML(it, idx, dayState, key){
     </div>`;
   }
   return `
-    <li class="item">
-      <label class="item-row">
-        <input type="checkbox" class="item-cb" ${checked} data-key="${key}" data-idx="${idx}">
-        <span class="item-check"></span>
-        <span class="item-body">
-          <span class="item-top">
+    <li class="item${allDone?' is-done':''}">
+      <div class="item-row">
+        <div class="item-body">
+          <div class="item-top">
             <span class="item-name">${it.name}</span>
             <span class="item-detail">${it.detail}</span>
-          </span>${bottom}
-        </span>
-      </label>${liftHTML}
+          </div>${bottom}
+        </div>
+        <div class="set-boxes">${boxes}</div>
+      </div>${liftHTML}
     </li>`;
 }
 
@@ -523,12 +478,12 @@ function render(){
     body.appendChild(note);
 
     if(day.items.length===0){
-      const row = document.createElement('label');
+      const done = !!dayState.rested;
+      const row = document.createElement('div');
       row.className = 'item-row';
       row.innerHTML = `
-        <input type="checkbox" class="item-cb" ${dayState.rested?'checked':''} data-key="${key}" data-rest="1">
-        <span class="item-check"></span>
-        <span class="item-body"><span class="item-top"><span class="item-name">Rested today</span></span></span>`;
+        <div class="item-body"><div class="item-top"><span class="item-name">Rested today</span></div></div>
+        <div class="set-boxes"><button type="button" class="set-box${done?' is-done':''}" data-key="${key}" data-rest="1">\u2713</button></div>`;
       body.appendChild(row);
     } else {
       const ul = document.createElement('ul');
@@ -550,8 +505,21 @@ function render(){
     daysEl.appendChild(details);
   });
 
-  daysEl.querySelectorAll('input.item-cb').forEach(cb=>{
-    cb.addEventListener('change', onToggle);
+  daysEl.querySelectorAll('.set-box').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.key;
+      if(!state[key]) state[key] = {};
+      if(btn.dataset.rest){
+        state[key].rested = !state[key].rested;
+      } else {
+        const idx = btn.dataset.idx;
+        const s = parseInt(btn.dataset.set,10);
+        if(!state[key][idx]) state[key][idx] = [];
+        state[key][idx][s] = !state[key][idx][s];
+      }
+      persist();
+      render();
+    });
   });
 
   daysEl.querySelectorAll('.lift-display').forEach(btn=>{
@@ -576,62 +544,11 @@ function render(){
   });
 }
 
-function onToggle(e){
-  const cb = e.target;
-  const key = cb.dataset.key;
-  if(!state[key]) state[key] = {};
-  if(cb.dataset.rest){
-    state[key].rested = cb.checked;
-  } else {
-    state[key][cb.dataset.idx] = cb.checked;
-  }
-  persist();
-  render();
-}
-
-/* ---------- sync panel wiring ---------- */
-function initSyncUI(){
-  const toggle = document.getElementById('syncToggle');
-  const panel = document.getElementById('syncPanel');
-  const cfg = getSyncConfig() || {};
-  document.getElementById('cfgOwner').value = cfg.owner || '';
-  document.getElementById('cfgRepo').value = cfg.repo || '';
-  document.getElementById('cfgToken').value = cfg.token || '';
-
-  toggle.addEventListener('click', ()=>{ panel.hidden = !panel.hidden; });
-
-  document.getElementById('cfgSave').addEventListener('click', async ()=>{
-    const owner = document.getElementById('cfgOwner').value.trim();
-    const repo = document.getElementById('cfgRepo').value.trim();
-    const token = document.getElementById('cfgToken').value.trim();
-    if(!owner || !repo || !token) return;
-    saveSyncConfig({owner, repo, token});
-    panel.hidden = true;
-    const remote = await fetchLiftsFromGitHub();
-    if(remote){
-      liftData = remote;
-      saveLocalLifts();
-      render();
-    }
-  });
-
-  document.getElementById('cfgClear').addEventListener('click', ()=>{
-    clearSyncConfig();
-    liftsSha = null;
-    syncStatus = 'unconfigured';
-    document.getElementById('cfgOwner').value = '';
-    document.getElementById('cfgRepo').value = '';
-    document.getElementById('cfgToken').value = '';
-    renderSyncStatus();
-  });
-}
-
 let state = loadState();
 let liftData = loadLocalLifts();
 let openKeys = new Set([dateKey(new Date())]);
-initSyncUI();
 render();
-fetchLiftsFromGitHub().then(remote=>{
+fetchLiftsFromPantry().then(remote=>{
   if(remote){
     liftData = remote;
     saveLocalLifts();
