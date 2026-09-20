@@ -7,132 +7,80 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --bg:#15141a;
-  --bg-elev:#1e1c25;
-  --bg-elev-2:#27242f;
-  --line:#332f3c;
-  --text:#f3efe6;
-  --text-dim:#9c98a6;
-  --text-faint:#6b6874;
-  --accent:#c9a24b;
-  --accent-ink:#1a1710;
-  --explosive:#c67059;
-  --explosive-bg:rgba(198,112,89,.16);
-  --strength:#bfa876;
-  --strength-bg:rgba(191,168,118,.16);
-  --hyp:#79a093;
-  --hyp-bg:rgba(121,160,147,.16);
-  --radius:10px;
-  --font-display:'Bebas Neue',sans-serif;
-  --font-body:'IBM Plex Sans',-apple-system,sans-serif;
+  --bg:#15141a;--bg-elev:#1e1c25;--bg-elev-2:#27242f;--line:#332f3c;
+  --text:#f3efe6;--text-dim:#9c98a6;--text-faint:#6b6874;--accent:#c9a24b;
+  --accent-ink:#1a1710;--explosive:#c67059;--explosive-bg:rgba(198,112,89,.16);
+  --strength:#bfa876;--strength-bg:rgba(191,168,118,.16);
+  --hyp:#79a093;--hyp-bg:rgba(121,160,147,.16);--radius:12px;
+  --font-display:'Bebas Neue',sans-serif;--font-body:'IBM Plex Sans',-apple-system,sans-serif;
   --font-mono:'IBM Plex Mono',monospace;
 }
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);}
-body{font-family:var(--font-body);padding:32px 18px 72px;-webkit-font-smoothing:antialiased;}
-.wrap{max-width:560px;margin:0 auto;}
-
-.hdr{text-align:center;margin-bottom:18px;}
-.hdr-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:var(--accent);margin:0 0 6px;text-transform:uppercase;}
-.hdr-title{font-family:var(--font-display);font-size:54px;letter-spacing:.02em;margin:0;line-height:1;}
-.hdr-range{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin:10px 0 0;}
-.sync-status{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;color:var(--text-faint);margin:6px 0 0;}
-.sync-status.ok{color:var(--hyp);}
-.sync-status.err{color:var(--explosive);}
-
-.legend{display:flex;justify-content:center;gap:14px;margin:20px 0 22px;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint);}
-.legend-dot{width:8px;height:8px;border-radius:50%;}
-.legend-dot.explosive{background:var(--explosive);}
-.legend-dot.strength{background:var(--strength);}
-.legend-dot.hypertrophy{background:var(--hyp);}
-
-.tally{display:flex;justify-content:center;gap:8px;margin-bottom:26px;}
-.tally-mark{width:34px;height:34px;border-radius:7px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--text-faint);transition:background .15s ease,border-color .15s ease,transform .15s ease;}
-.tally-mark.is-today{border-color:var(--accent);color:var(--text);}
-.tally-mark.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
-.tally-mark.is-done:nth-child(odd){transform:rotate(-3deg);}
-.tally-mark.is-done:nth-child(even){transform:rotate(2deg);}
-
-#days{display:flex;flex-direction:column;gap:10px;}
-
-.day{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
-.day.is-today{border-color:var(--accent);}
-.day>summary{list-style:none;cursor:pointer;}
-.day>summary::-webkit-details-marker{display:none;}
-.day>summary::marker{content:"";}
-
-.day-hdr{display:flex;align-items:center;gap:14px;padding:14px 16px;}
-.day-hdr-date{font-family:var(--font-mono);text-align:center;min-width:42px;line-height:1.25;}
-.day-date{display:block;font-size:11px;color:var(--text-faint);}
-.day-name{display:block;font-size:10.5px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
-.day-hdr-mid{flex:1;min-width:0;}
-.day-title{font-family:var(--font-display);font-size:22px;letter-spacing:.01em;margin:0 0 3px;line-height:1.05;}
-.day-meta{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);}
-.day-hdr-right{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);flex-shrink:0;}
-.day-progress{font-size:13px;color:var(--text-dim);}
-.day.is-complete .day-progress{color:var(--accent);}
-.chevron{color:var(--text-faint);transition:transform .15s ease;flex-shrink:0;}
-.day[open] .chevron{transform:rotate(180deg);}
-
-.day-body{padding:0 16px 18px;}
-.day-note{font-size:13.5px;color:var(--text-dim);margin:0 0 10px;padding-top:12px;border-top:1px solid var(--line);}
-
-.group-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);padding:10px 6px 4px;}
-.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px;}
-
-.item{padding:8px 6px;border-radius:8px;}
-.item-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
-.item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
-.item-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
-.item-name{font-size:14.5px;}
-.item.is-done .item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint);}
-.item-detail{font-family:var(--font-mono);font-size:12px;color:var(--text-faint);white-space:nowrap;flex-shrink:0;}
-.item-bottom{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.item-sub{font-size:11px;color:var(--text-faint);}
-.item-cat{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;}
-.cat-explosive{background:var(--explosive-bg);color:var(--explosive);}
-.cat-strength{background:var(--strength-bg);color:var(--strength);}
-.cat-hypertrophy{background:var(--hyp-bg);color:var(--hyp);}
-
-.set-boxes{display:flex;gap:6px;flex-shrink:0;margin-top:1px;}
-.set-box{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--line);background:var(--bg-elev-2);color:var(--text-faint);font-family:var(--font-mono);font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;}
-.set-box:hover{border-color:var(--accent);}
-.set-box.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);}
-.set-box:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-
-.lift-row{padding:6px 6px 4px 6px;}
-.lift-display{background:none;border:none;padding:0;margin:0;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);cursor:pointer;text-align:left;}
-.lift-display:hover{color:var(--accent);}
-.lift-display b{color:var(--text-dim);font-weight:600;}
-.lift-edit{display:flex;align-items:center;gap:6px;margin-top:5px;}
-.lift-edit[hidden]{display:none;}
-.lift-w,.lift-r{width:58px;background:var(--bg-elev-2);border:1px solid var(--line);border-radius:5px;color:var(--text);font-family:var(--font-mono);font-size:12px;padding:5px 6px;}
-.lift-x{color:var(--text-faint);font-size:11px;}
-.lift-unit{color:var(--text-faint);font-size:10.5px;}
-.lift-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:5px;padding:5px 10px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;cursor:pointer;}
-
-@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
-@media (max-width:380px){.hdr-title{font-size:44px;}.day-title{font-size:19px;}.set-box{width:24px;height:24px;}}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text)}
+body{font-family:var(--font-body);padding:28px 14px 64px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto}
+.hdr{text-align:center;margin-bottom:20px}
+.hdr-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--accent);margin:0 0 5px;text-transform:uppercase}
+.hdr-title{font-family:var(--font-display);font-size:54px;letter-spacing:.02em;margin:0;line-height:1}
+.hdr-sub{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin:8px 0 0}
+.sync-status{font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;color:var(--text-faint);margin:7px 0 0}
+.sync-status.ok{color:var(--hyp)}.sync-status.err{color:var(--explosive)}
+.legend{display:flex;justify-content:center;gap:12px;margin:18px 0 20px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-faint)}
+.legend-dot{width:7px;height:7px;border-radius:50%}.legend-dot.explosive{background:var(--explosive)}.legend-dot.strength{background:var(--strength)}.legend-dot.hypertrophy{background:var(--hyp)}
+#days{display:flex;flex-direction:column;gap:10px}
+.day{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.day>summary{list-style:none;cursor:pointer}.day>summary::-webkit-details-marker{display:none}.day>summary::marker{content:""}
+.day-hdr{display:flex;align-items:center;gap:12px;padding:16px}
+.day-index{width:34px;height:34px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);flex-shrink:0}
+.day.is-complete .day-index{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.day-hdr-mid{flex:1;min-width:0}.day-title{font-family:var(--font-display);font-size:24px;letter-spacing:.01em;margin:0 0 3px;line-height:1.05}
+.day-meta{font-family:var(--font-mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint)}
+.day-hdr-right{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);flex-shrink:0}
+.day-progress{font-size:11px;color:var(--text-dim)}.day.is-complete .day-progress{color:var(--accent)}
+.chevron{color:var(--text-faint);transition:transform .15s ease}.day[open] .chevron{transform:rotate(180deg)}
+.day-body{padding:0 12px 16px}.day-note{font-size:12.5px;color:var(--text-dim);margin:0 4px 9px;padding:12px 4px 0;border-top:1px solid var(--line)}
+.group-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);padding:10px 6px 4px}
+.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.item{padding:9px 6px;border-radius:8px}.item-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.item-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.item-name{font-size:14px}.item.is-done .item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint)}
+.item-detail{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);white-space:nowrap;flex-shrink:0}
+.item-bottom{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.item-sub{font-size:10.5px;color:var(--text-faint)}
+.item-cat{font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border-radius:3px;white-space:nowrap}
+.cat-explosive{background:var(--explosive-bg);color:var(--explosive)}.cat-strength{background:var(--strength-bg);color:var(--strength)}.cat-hypertrophy{background:var(--hyp-bg);color:var(--hyp)}
+.set-boxes{display:flex;gap:5px;flex-shrink:0}.set-box{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg-elev-2);color:var(--text-faint);font-family:var(--font-mono);font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:.12s}
+.set-box:hover{border-color:var(--accent)}.set-box.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.set-box:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lift-row{padding:4px 6px 2px}.lift-display{background:none;border:none;padding:0;margin:0;font-family:var(--font-mono);font-size:10px;color:var(--text-faint);cursor:pointer;text-align:left}
+.lift-display:hover{color:var(--accent)}.lift-display b{color:var(--text-dim);font-weight:600}
+.lift-edit{display:flex;align-items:center;gap:5px;margin-top:5px}.lift-edit[hidden]{display:none}
+.lift-w,.lift-r{width:58px;background:var(--bg-elev-2);border:1px solid var(--line);border-radius:5px;color:var(--text);font-family:var(--font-mono);font-size:11px;padding:6px}
+.lift-unit,.lift-x{color:var(--text-faint);font-size:9px}.lift-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:5px;padding:6px 10px;font-family:var(--font-mono);font-size:9.5px;font-weight:600;cursor:pointer}
+.pr{font-family:var(--font-mono);font-size:9px;color:var(--accent);margin-left:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:380px){.hdr-title{font-size:46px}.day-title{font-size:21px}.set-box{width:30px;height:30px}}
 </style>
+
 </head>
 <body>
 <div class="wrap">
   <header class="hdr">
-    <p class="hdr-eyebrow">7-Day Camp</p>
+    <p class="hdr-eyebrow">Training Program</p>
     <h1 class="hdr-title">CAMP LOG</h1>
-    <p class="hdr-range" id="weekRange"></p>
+    <p class="hdr-sub">4-day strength · athleticism · conditioning</p>
     <p class="sync-status" id="syncStatusText"></p>
   </header>
 
   <div class="legend">
-    <span class="legend-item"><span class="legend-dot explosive"></span>Explosive tempo · 5 max</span>
+    <span class="legend-item"><span class="legend-dot explosive"></span>Explosive · 5 max</span>
     <span class="legend-item"><span class="legend-dot strength"></span>Strength · 8-10</span>
     <span class="legend-item"><span class="legend-dot hypertrophy"></span>Hypertrophy · 12-20</span>
   </div>
-  <div class="tally" id="tally"></div>
+
   <main id="days"></main>
 </div>
 
@@ -150,28 +98,29 @@ const STORAGE_KEY = 'campLogState';
 const LIFTS_LOCAL_KEY = 'campLogLifts';
 
 const DAYS = [
-  { name:"Sunday", title:"Push", meta:"9 exercises", time:"~50 min",
-    note:"Chest, shoulders, triceps — one move per head. Bench goes explosive; the rest stays controlled.",
+  { title:"Push + Abs + Neck", meta:"Push · Abs · Neck", time:"~55 min",
+    note:"Chest, shoulders, triceps, abs and neck. Keep explosive work fast and controlled.",
     items:[
       {name:"Incline DB Press", sub:"Upper chest", cat:"strength", sets:2, detail:"2 x 8-10", group:"Chest"},
       {name:"Flat Barbell Bench Press", sub:"Mid chest", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Chest"},
       {name:"Weighted Dips", sub:"Lower chest", cat:"strength", sets:2, detail:"2 x 8-10", group:"Chest"},
-      {name:"butterfly/Cabel cross", sub:"Chest", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Chest"},
+      {name:"Butterfly / Cable Cross", sub:"Chest", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Chest"},
       {name:"DB Front Raise", sub:"Front delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
       {name:"DB Lateral Raise", sub:"Side delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
       {name:"Close-Grip Bench Press", sub:"Long head", cat:"strength", sets:2, detail:"2 x 8-10", group:"Triceps"},
       {name:"Rope Pushdown", sub:"Lateral head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Triceps"},
       {name:"Reverse-Grip Pushdown", sub:"Medial head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Triceps"},
+      {name:"Cable Crunch", sub:"Upper abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Dragon Flag", sub:"Lower abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Russian Twists", sub:"Obliques", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Push-Up Plus", sub:"Serratus anterior", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
+      {name:"Neck Curl", sub:"Flexion, front", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
+      {name:"Neck Harness Extension", sub:"Extension, back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
+      {name:'"Mike Tyson"', sub:"Front & back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"}
     ]
   },
-  { name:"Monday", title:"Long-Term Cardio", meta:"Fasted", time:"45-50 min",
-    note:"Zone 2 run. Conversational pace — if you can't talk, back off.",
-    items:[
-      {name:"*skip if you walked too much that week or in your current day-to-day life.", detail:"45-50 min, Zone 2"},
-    ]
-  },
-  { name:"Tuesday", title:"Pull", meta:"9 exercises", time:"~50 min",
-    note:"Back and biceps — one move per head. Pull-ups go explosive; the rest stays controlled.",
+  { title:"Pull + Forearms + Traps", meta:"Pull · Forearms · Traps", time:"~55 min",
+    note:"Back, biceps, forearms and traps. Pull-ups stay explosive; the rest stays controlled.",
     items:[
       {name:"Pull-Ups", sub:"Lats, upper / vertical pull", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Back"},
       {name:"Straight-Arm Pulldown", sub:"Lats, lower / diagonal pull", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
@@ -182,170 +131,79 @@ const DAYS = [
       {name:"Incline DB Curl", sub:"Long head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
       {name:"Hammer Curl", sub:"Brachialis", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
       {name:"EZ-Bar Reverse Curl", sub:"Brachioradialis", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
+      {name:"Wrist Curls", sub:"Flexors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
+      {name:"Reverse Wrist Curls", sub:"Extensors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
+      {name:"DB Pronation / Supination", sub:"Pronators / supinators", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
+      {name:"Farmer Carry", sub:"Grip", cat:"hypertrophy", sets:2, detail:"2 x 30-40m", group:"Forearms"},
+      {name:"Barbell / DB Shrugs", sub:"Upper traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
+      {name:"Face Pulls", sub:"Middle traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
+      {name:"Y-Raises", sub:"Lower traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"}
     ]
   },
-  { name:"Wednesday", title:"Leg", meta:"7 exercises", time:"~45 min",
-    note:"Quads, hamstrings, glutes — one move per head. Hip thrust goes explosive; RDL stays a rep short of failure.",
+  { title:"Legs", meta:"Quads · Hamstrings · Glutes · Calves", time:"~50 min",
+    note:"Quads, hamstrings, glutes and calves. Hip thrust stays explosive; RDL stays a rep short of failure.",
     items:[
       {name:"Leg Extension", sub:"Rectus femoris", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Quads"},
       {name:"Deep Squats", sub:"Vastus lateralis", cat:"strength", sets:2, detail:"2 x 8-10", group:"Quads"},
       {name:"Bulgarian Split Squats", sub:"Vastus medialis", cat:"strength", sets:2, detail:"2 x 8-10", group:"Quads"},
       {name:"Romanian Deadlift", sub:"Biceps femoris", cat:"strength", sets:2, detail:"2 x 8-10, stop short of failure", group:"Hamstrings"},
-      {name:"Leg Curl", sub:"Semitendinosus/semimembranosus", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Hamstrings"},
-      {name:"Kegel Glute Bridge", sub:"Glutes & better, long-lasting sex. here is how to do it: https://youtube.com/shorts/JXvicyNH2c8?si=IFTbwrvTYyh8Vvdh", sets:2, detail:"2 x 15 - 20", group:"Glutes"},
+      {name:"Leg Curl", sub:"Semitendinosus / semimembranosus", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Hamstrings"},
+      {name:"Kegel Glute Bridge", sub:"Glutes", cat:"hypertrophy", sets:2, detail:"2 x 15-20", group:"Glutes"},
       {name:"Lying Side Leg Raises (Alt: Cable Hip Abduction)", sub:"Glute medius", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Glutes"},
-    ]
-  },
-  { name:"Thursday", title:"Rest", meta:"", time:"\u2014",
-    note:"Full rest. No lifting, no explosive work.",
-    items:[]
-  },
-  { name:"Friday", title:"Short-Term Cardio/Explosivness", meta:"", time:"~30-35 min",
-    note:"5 rounds, 1 min rest between rounds. Move as fast as you can.",
-    items:[
-      {name:"Kettlebell Swings", detail:"x 20"},
-      {name:"Burpees", detail:"x 15"},
-      {name:"Jump Lunges", detail:"x 12/leg"},
-      {name:"Push-Ups", detail:"x 20"},
-      {name:"Heavy Bag, all-out", detail:"30 sec"},
-    ]
-  },
-  { name:"Saturday", title:"Supplementary", meta:"17 exercises", time:"~55 min",
-    note:"Traps, neck, abs, forearms, calves — everything the other days skip. Superset flexor+extensor, neck front+back, and calf in+out to stay under an hour.",
-    items:[
-      {name:"Cable Crunch", sub:"Upper abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Dragon Flag", sub:"Lower abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Russian Twists", sub:"Obliques", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Push-Up Plus", sub:"Serratus anterior", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Wrist Curls", sub:"Flexors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
-      {name:"Reverse Wrist Curls", sub:"Extensors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
-      {name:"DB Pronation / Supination", sub:"Pronators / supinators", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
-      {name:"Farmer Carry", sub:"Grip", cat:"hypertrophy", sets:2, detail:"2 x 30-40m", group:"Forearms"},
-      {name:"Neck Curl", sub:"Flexion, front", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
-      {name:"Neck Harness Extension", sub:"Extension, back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
-      {name:'"Mike Tyson"', sub:"Front & back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
-      {name:"Barbell / DB Shrugs", sub:"Upper traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
-      {name:"Face Pulls", sub:"Middle traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
-      {name:"Y-Raises", sub:"Lower traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
       {name:"Standing Calf Raise", sub:"Inner, medial gastroc", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
       {name:"Seated Calf Raise", sub:"Outer, lateral gastroc", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
-      {name:"Tib Raises", sub:"Tibialis anterior / shin", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
+      {name:"Tib Raises", sub:"Tibialis anterior / shin", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"}
     ]
   },
+  { title:"Cardio + Explosiveness", meta:"Conditioning", time:"~15-30 min",
+    note:"If a heavy bag is available, use it. If not, do 5 treadmill sprint rounds: 30-60 seconds hard per round.",
+    items:[
+      {name:"Heavy Bag, all-out", detail:"30-60 sec / round", group:"Option A — Heavy Bag"},
+      {name:"Treadmill Sprint", detail:"30-60 sec hard", group:"Option B — No Heavy Bag", sets:5, cat:"explosive"},
+      {name:"Recovery", detail:"Short recovery between rounds", group:"Option B — No Heavy Bag", sets:1}
+    ]
+  }
 ];
 
-/* ---------- checkbox / completion state (local per device) ---------- */
+/* ---------- persistent workout state ---------- */
+const STORAGE_KEY = 'campLogStateV2';
+const LIFTS_LOCAL_KEY = 'campLogLiftsV2';
+
 function loadState(){
-  try{ const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
+  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw?JSON.parse(raw):{}; }catch(e){ return {}; }
 }
 function persist(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
 }
-
-/* ---------- lift data (weight / reps, last + best), synced via Pantry ---------- */
 function loadLocalLifts(){
-  try{ const raw = localStorage.getItem(LIFTS_LOCAL_KEY); return raw ? JSON.parse(raw) : {}; }catch(e){ return {}; }
+  try{ const raw=localStorage.getItem(LIFTS_LOCAL_KEY); return raw?JSON.parse(raw):{}; }catch(e){ return {}; }
 }
 function saveLocalLifts(){
   try{ localStorage.setItem(LIFTS_LOCAL_KEY, JSON.stringify(liftData)); }catch(e){}
 }
-
-function isUnconfigured(){
-  return !PANTRY_ID || PANTRY_ID.indexOf('PASTE_YOUR')===0;
-}
-
-const PANTRY_URL = `https://getpantry.cloud/apiv1/pantry/${PANTRY_ID}/basket/${BASKET_NAME}`;
-let syncStatus = 'unconfigured';
-
 function renderSyncStatus(){
-  const el = document.getElementById('syncStatusText');
-  if(!el) return;
-  el.className = 'sync-status';
-  if(isUnconfigured()){ el.textContent = 'Not set up yet \u2014 see chat for the one-time step'; }
-  else if(syncStatus==='busy'){ el.textContent = 'Saving...'; }
-  else if(syncStatus==='ok'){ el.textContent = 'Synced'; el.classList.add('ok'); }
-  else if(syncStatus==='err'){ el.textContent = 'Couldn\u2019t reach storage \u2014 saved on this device only'; el.classList.add('err'); }
-  else { el.textContent = ''; }
-}
-
-async function fetchLiftsFromPantry(){
-  if(isUnconfigured()){ renderSyncStatus(); return null; }
-  syncStatus = 'busy'; renderSyncStatus();
-  try{
-    const res = await fetch(PANTRY_URL);
-    if(!res.ok){
-      syncStatus = res.status===400 ? 'ok' : 'err';
-      renderSyncStatus();
-      return {};
-    }
-    const json = await res.json();
-    delete json._metadata;
-    syncStatus = 'ok'; renderSyncStatus();
-    return json;
-  }catch(e){
-    syncStatus = 'err'; renderSyncStatus();
-    return null;
-  }
-}
-
-async function pushLiftsToPantry(){
-  if(isUnconfigured()) return;
-  syncStatus = 'busy'; renderSyncStatus();
-  try{
-    const res = await fetch(PANTRY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(liftData)
-    });
-    syncStatus = res.ok ? 'ok' : 'err';
-  }catch(e){
-    syncStatus = 'err';
-  }
-  renderSyncStatus();
+  const el=document.getElementById('syncStatusText');
+  if(el) el.textContent='Saved on this device';
 }
 
 function liftDisplayText(rec){
   if(!rec || rec.lastWeight==null){ return 'Tap to log weight & reps'; }
-  const last = `${rec.lastWeight}kg\u00d7${rec.lastReps}`;
-  const best = rec.bestWeight!=null ? `${rec.bestWeight}kg\u00d7${rec.bestReps}` : last;
-  return `Last <b>${last}</b>  \u00b7  Best <b>${best}</b>`;
+  const last = `${rec.lastWeight}kg×${rec.lastReps ?? '—'}`;
+  const best = rec.bestWeight!=null ? `${rec.bestWeight}kg×${rec.bestReps ?? '—'}` : last;
+  return `Last <b>${last}</b> · PR <b>${best}</b>`;
 }
-
 function saveLift(exName, weight, reps){
   if(weight==null || isNaN(weight)) return;
-  if(!liftData[exName]) liftData[exName] = {};
-  const rec = liftData[exName];
-  rec.lastWeight = weight;
-  rec.lastReps = reps;
-  if(rec.bestWeight == null || weight > rec.bestWeight){
-    rec.bestWeight = weight;
-    rec.bestReps = reps;
+  if(!liftData[exName]) liftData[exName]={};
+  const rec=liftData[exName];
+  rec.lastWeight=weight; rec.lastReps=reps;
+  if(rec.bestWeight==null || weight>rec.bestWeight){
+    rec.bestWeight=weight; rec.bestReps=reps;
+  }else if(weight===rec.bestWeight && reps!=null && (rec.bestReps==null || reps>rec.bestReps)){
+    rec.bestReps=reps;
   }
   saveLocalLifts();
-  pushLiftsToPantry();
 }
-
-/* ---------- date helpers ---------- */
-function startOfWeek(d){
-  const date = new Date(d);
-  date.setHours(0,0,0,0);
-  date.setDate(date.getDate() - date.getDay());
-  return date;
-}
-function dateKey(d){
-  const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
-}
-function fmtCardDate(d){ return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}).toUpperCase(); }
-function fmtWeekRange(start){
-  const end = new Date(start);
-  end.setDate(start.getDate()+6);
-  const sameMonth = start.getMonth()===end.getMonth();
-  const startStr = start.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-  const endStr = sameMonth ? end.getDate() : end.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-  return `Week of ${startStr}\u2013${endStr}`;
-}
-
 /* ---------- set-level completion ---------- */
 function setsFor(it){ return it.sets || 1; }
 function doneCountFor(it, idx, dayState){
@@ -418,143 +276,138 @@ function itemRowHTML(it, idx, dayState, key){
     </li>`;
 }
 
-function render(){
-  const today = new Date();
-  const weekStart = startOfWeek(today);
-  const todayKey = dateKey(today);
-
-  document.getElementById('weekRange').textContent = fmtWeekRange(weekStart);
-  renderSyncStatus();
-
-  const tallyEl = document.getElementById('tally');
-  const daysEl = document.getElementById('days');
-  tallyEl.innerHTML = '';
-  daysEl.innerHTML = '';
-
-  DAYS.forEach((day, i)=>{
-    const cardDate = new Date(weekStart);
-    cardDate.setDate(weekStart.getDate()+i);
-    const key = dateKey(cardDate);
-    const isToday = key===todayKey;
-    const dayState = state[key] || {};
-    const comp = dayCompletion(day, dayState);
-
-    const mark = document.createElement('div');
-    mark.className = 'tally-mark' + (comp.complete?' is-done':'') + (isToday?' is-today':'');
-    mark.textContent = day.name[0];
-    tallyEl.appendChild(mark);
-
-    const details = document.createElement('details');
-    details.className = 'day' + (comp.complete?' is-complete':'') + (isToday?' is-today':'');
-    if(openKeys.has(key)) details.open = true;
-
-    const summary = document.createElement('summary');
-    summary.className = 'day-hdr';
-    summary.innerHTML = `
-      <div class="day-hdr-date">
-        <span class="day-date">${fmtCardDate(cardDate)}</span>
-        <span class="day-name">${day.name}</span>
+function itemRowHTML(it, idx, dayState, key){
+  const n=setsFor(it);
+  const doneN=doneCountFor(it,idx,dayState);
+  const allDone=doneN===n;
+  const doneArr=(dayState&&dayState[idx])||[];
+  const hasMeta=it.sub||it.cat;
+  const bottom=hasMeta?`<div class="item-bottom">
+    ${it.sub?`<span class="item-sub">${it.sub}</span>`:''}
+    ${it.cat?`<span class="item-cat cat-${it.cat}">${catLabel(it.cat)}</span>`:''}
+  </div>`:'';
+  let boxes='';
+  for(let s=0;s<n;s++){
+    const d=!!doneArr[s];
+    boxes+=`<button type="button" class="set-box${d?' is-done':''}" data-key="${key}" data-idx="${idx}" data-set="${s}">${n>1?(s+1):'✓'}</button>`;
+  }
+  let liftHTML='';
+  if(it.cat){
+    const rec=liftData[it.name];
+    liftHTML=`<div class="lift-row" data-ex="${it.name}">
+      <button class="lift-display" type="button">${liftDisplayText(rec)}</button>
+      <div class="lift-edit" hidden>
+        <input class="lift-w" type="number" step="any" inputmode="decimal" placeholder="${rec&&rec.lastWeight!=null?rec.lastWeight:'kg'}">
+        <span class="lift-unit">kg</span><span class="lift-x">×</span>
+        <input class="lift-r" type="number" step="1" inputmode="numeric" placeholder="${rec&&rec.lastReps!=null?rec.lastReps:'reps'}">
+        <button class="lift-save" type="button">Save</button>
       </div>
+    </div>`;
+  }
+  return `<li class="item${allDone?' is-done':''}">
+    <div class="item-row">
+      <div class="item-body">
+        <div class="item-top"><span class="item-name">${it.name}</span><span class="item-detail">${it.detail||''}</span></div>
+        ${bottom}
+      </div>
+      <div class="set-boxes">${boxes}</div>
+    </div>${liftHTML}
+  </li>`;
+}
+
+function render(){
+  renderSyncStatus();
+  const daysEl=document.getElementById('days');
+  daysEl.innerHTML='';
+
+  DAYS.forEach((day,i)=>{
+    const key=`day-${i}`;
+    const dayState=state[key]||{};
+    const comp=dayCompletion(day,dayState);
+
+    const details=document.createElement('details');
+    details.className='day'+(comp.complete?' is-complete':'');
+    if(openKeys.has(key)) details.open=true;
+
+    const summary=document.createElement('summary');
+    summary.className='day-hdr';
+    summary.innerHTML=`
+      <div class="day-index">${String(i+1).padStart(2,'0')}</div>
       <div class="day-hdr-mid">
         <h2 class="day-title">${day.title}</h2>
-        ${day.meta ? `<span class="day-meta">${day.meta}</span>` : ''}
+        <span class="day-meta">${day.meta}</span>
       </div>
       <div class="day-hdr-right">
         <span class="day-progress">${comp.done}/${comp.total}</span>
         <svg class="chevron" viewBox="0 0 24 24" width="18" height="18"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>`;
     details.appendChild(summary);
+    details.addEventListener('toggle',()=>{ if(details.open) openKeys.add(key); else openKeys.delete(key); });
 
-    details.addEventListener('toggle', ()=>{
-      if(details.open) openKeys.add(key); else openKeys.delete(key);
-    });
-
-    const body = document.createElement('div');
-    body.className = 'day-body';
-
-    const note = document.createElement('p');
-    note.className = 'day-note';
-    note.textContent = day.time !== '\u2014' ? `${day.note}  \u00b7  ${day.time}` : day.note;
+    const body=document.createElement('div');
+    body.className='day-body';
+    const note=document.createElement('p');
+    note.className='day-note';
+    note.textContent=`${day.note} · ${day.time}`;
     body.appendChild(note);
 
-    if(day.items.length===0){
-      const done = !!dayState.rested;
-      const row = document.createElement('div');
-      row.className = 'item-row';
-      row.innerHTML = `
-        <div class="item-body"><div class="item-top"><span class="item-name">Rested today</span></div></div>
-        <div class="set-boxes"><button type="button" class="set-box${done?' is-done':''}" data-key="${key}" data-rest="1">\u2713</button></div>`;
-      body.appendChild(row);
-    } else {
-      const ul = document.createElement('ul');
-      ul.className = 'items';
-      let lastGroup = null;
-      let html = '';
-      day.items.forEach((it, idx)=>{
-        if(it.group && it.group!==lastGroup){
-          html += `<li class="group-label">${it.group}</li>`;
-          lastGroup = it.group;
-        }
-        html += itemRowHTML(it, idx, dayState, key);
-      });
-      ul.innerHTML = html;
-      body.appendChild(ul);
-    }
-
+    const ul=document.createElement('ul');
+    ul.className='items';
+    let lastGroup=null,html='';
+    day.items.forEach((it,idx)=>{
+      if(it.group&&it.group!==lastGroup){
+        html+=`<li class="group-label">${it.group}</li>`;
+        lastGroup=it.group;
+      }
+      html+=itemRowHTML(it,idx,dayState,key);
+    });
+    ul.innerHTML=html;
+    body.appendChild(ul);
     details.appendChild(body);
     daysEl.appendChild(details);
   });
 
   daysEl.querySelectorAll('.set-box').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const key = btn.dataset.key;
-      if(!state[key]) state[key] = {};
-      if(btn.dataset.rest){
-        state[key].rested = !state[key].rested;
-      } else {
-        const idx = btn.dataset.idx;
-        const s = parseInt(btn.dataset.set,10);
-        if(!state[key][idx]) state[key][idx] = [];
-        state[key][idx][s] = !state[key][idx][s];
-      }
+    btn.addEventListener('click',()=>{
+      const key=btn.dataset.key;
+      if(!state[key]) state[key]={};
+      const idx=btn.dataset.idx;
+      const s=parseInt(btn.dataset.set,10);
+      if(!state[key][idx]) state[key][idx]=[];
+      state[key][idx][s]=!state[key][idx][s];
       persist();
       render();
     });
   });
 
   daysEl.querySelectorAll('.lift-display').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const editEl = btn.nextElementSibling;
-      editEl.hidden = !editEl.hidden;
-      if(!editEl.hidden){ editEl.querySelector('.lift-w').focus(); }
+    btn.addEventListener('click',()=>{
+      const editEl=btn.nextElementSibling;
+      editEl.hidden=!editEl.hidden;
+      if(!editEl.hidden) editEl.querySelector('.lift-w').focus();
     });
   });
 
   daysEl.querySelectorAll('.lift-save').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const row = btn.closest('.lift-row');
-      const exName = row.dataset.ex;
-      const w = parseFloat(row.querySelector('.lift-w').value);
-      const rRaw = row.querySelector('.lift-r').value;
-      const r = rRaw==='' ? (liftData[exName]&&liftData[exName].lastReps!=null?liftData[exName].lastReps:null) : parseInt(rRaw,10);
+    btn.addEventListener('click',()=>{
+      const row=btn.closest('.lift-row');
+      const exName=row.dataset.ex;
+      const w=parseFloat(row.querySelector('.lift-w').value);
+      const rRaw=row.querySelector('.lift-r').value;
+      const previous=liftData[exName];
+      const r=rRaw===''?(previous&&previous.lastReps!=null?previous.lastReps:null):parseInt(rRaw,10);
       if(isNaN(w)) return;
-      saveLift(exName, w, r);
+      saveLift(exName,w,r);
       render();
     });
   });
 }
 
-let state = loadState();
-let liftData = loadLocalLifts();
-let openKeys = new Set([dateKey(new Date())]);
+let state=loadState();
+let liftData=loadLocalLifts();
+let openKeys=new Set(['day-0']);
 render();
-fetchLiftsFromPantry().then(remote=>{
-  if(remote){
-    liftData = remote;
-    saveLocalLifts();
-    render();
-  }
-});
+
 </script>
 </body>
 </html>
