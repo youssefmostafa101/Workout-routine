@@ -4,410 +4,1947 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Camp Log</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#15141a;--bg-elev:#1e1c25;--bg-elev-2:#27242f;--line:#332f3c;
-  --text:#f3efe6;--text-dim:#9c98a6;--text-faint:#6b6874;--accent:#c9a24b;
-  --accent-ink:#1a1710;--explosive:#c67059;--explosive-bg:rgba(198,112,89,.16);
-  --strength:#bfa876;--strength-bg:rgba(191,168,118,.16);
-  --hyp:#79a093;--hyp-bg:rgba(121,160,147,.16);--radius:12px;
-  --font-display:'Bebas Neue',sans-serif;--font-body:'IBM Plex Sans',-apple-system,sans-serif;
+  --bg:#15141a;
+  --bg-elev:#1e1c25;
+  --bg-elev-2:#27242f;
+  --line:#332f3c;
+  --text:#f3efe6;
+  --text-dim:#9c98a6;
+  --text-faint:#6b6874;
+  --accent:#c9a24b;
+  --accent-ink:#1a1710;
+
+  --explosive:#c67059;
+  --explosive-bg:rgba(198,112,89,.16);
+
+  --strength:#bfa876;
+  --strength-bg:rgba(191,168,118,.16);
+
+  --hyp:#79a093;
+  --hyp-bg:rgba(121,160,147,.16);
+
+  --radius:12px;
+
+  --font-display:'Bebas Neue',sans-serif;
+  --font-body:'IBM Plex Sans',-apple-system,sans-serif;
   --font-mono:'IBM Plex Mono',monospace;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text)}
-body{font-family:var(--font-body);padding:28px 14px 64px;-webkit-font-smoothing:antialiased}
-.wrap{max-width:600px;margin:0 auto}
-.hdr{text-align:center;margin-bottom:20px}
-.hdr-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;color:var(--accent);margin:0 0 5px;text-transform:uppercase}
-.hdr-title{font-family:var(--font-display);font-size:54px;letter-spacing:.02em;margin:0;line-height:1}
-.hdr-sub{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin:8px 0 0}
-.sync-status{font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;color:var(--text-faint);margin:7px 0 0}
-.sync-status.ok{color:var(--hyp)}.sync-status.err{color:var(--explosive)}
-.legend{display:flex;justify-content:center;gap:12px;margin:18px 0 20px;flex-wrap:wrap}
-.legend-item{display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-faint)}
-.legend-dot{width:7px;height:7px;border-radius:50%}.legend-dot.explosive{background:var(--explosive)}.legend-dot.strength{background:var(--strength)}.legend-dot.hypertrophy{background:var(--hyp)}
-#days{display:flex;flex-direction:column;gap:10px}
-.day{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
-.day>summary{list-style:none;cursor:pointer}.day>summary::-webkit-details-marker{display:none}.day>summary::marker{content:""}
-.day-hdr{display:flex;align-items:center;gap:12px;padding:16px}
-.day-index{width:34px;height:34px;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);flex-shrink:0}
-.day.is-complete .day-index{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.day-hdr-mid{flex:1;min-width:0}.day-title{font-family:var(--font-display);font-size:24px;letter-spacing:.01em;margin:0 0 3px;line-height:1.05}
-.day-meta{font-family:var(--font-mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint)}
-.day-hdr-right{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);flex-shrink:0}
-.day-progress{font-size:11px;color:var(--text-dim)}.day.is-complete .day-progress{color:var(--accent)}
-.chevron{color:var(--text-faint);transition:transform .15s ease}.day[open] .chevron{transform:rotate(180deg)}
-.day-body{padding:0 12px 16px}.day-note{font-size:12.5px;color:var(--text-dim);margin:0 4px 9px;padding:12px 4px 0;border-top:1px solid var(--line)}
-.group-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-faint);padding:10px 6px 4px}
-.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
-.item{padding:9px 6px;border-radius:8px}.item-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.item-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.item-name{font-size:14px}.item.is-done .item-name{color:var(--text-dim);text-decoration:line-through;text-decoration-color:var(--text-faint)}
-.item-detail{font-family:var(--font-mono);font-size:10.5px;color:var(--text-faint);white-space:nowrap;flex-shrink:0}
-.item-bottom{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.item-sub{font-size:10.5px;color:var(--text-faint)}
-.item-cat{font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;padding:2px 5px;border-radius:3px;white-space:nowrap}
-.cat-explosive{background:var(--explosive-bg);color:var(--explosive)}.cat-strength{background:var(--strength-bg);color:var(--strength)}.cat-hypertrophy{background:var(--hyp-bg);color:var(--hyp)}
-.set-boxes{display:flex;gap:5px;flex-shrink:0}.set-box{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg-elev-2);color:var(--text-faint);font-family:var(--font-mono);font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:.12s}
-.set-box:hover{border-color:var(--accent)}.set-box.is-done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.set-box:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.lift-row{padding:4px 6px 2px}.lift-display{background:none;border:none;padding:0;margin:0;font-family:var(--font-mono);font-size:10px;color:var(--text-faint);cursor:pointer;text-align:left}
-.lift-display:hover{color:var(--accent)}.lift-display b{color:var(--text-dim);font-weight:600}
-.lift-edit{display:flex;align-items:center;gap:5px;margin-top:5px}.lift-edit[hidden]{display:none}
-.lift-w,.lift-r{width:58px;background:var(--bg-elev-2);border:1px solid var(--line);border-radius:5px;color:var(--text);font-family:var(--font-mono);font-size:11px;padding:6px}
-.lift-unit,.lift-x{color:var(--text-faint);font-size:9px}.lift-save{background:var(--accent);color:var(--accent-ink);border:none;border-radius:5px;padding:6px 10px;font-family:var(--font-mono);font-size:9.5px;font-weight:600;cursor:pointer}
-.pr{font-family:var(--font-mono);font-size:9px;color:var(--accent);margin-left:4px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-@media (max-width:380px){.hdr-title{font-size:46px}.day-title{font-size:21px}.set-box{width:30px;height:30px}}
-</style>
 
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
+}
+
+body{
+  font-family:var(--font-body);
+  padding:28px 14px 64px;
+  -webkit-font-smoothing:antialiased;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+.wrap{
+  max-width:600px;
+  margin:0 auto;
+}
+
+/* HEADER */
+
+.hdr{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.hdr-eyebrow{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.2em;
+  color:var(--accent);
+  margin:0 0 5px;
+  text-transform:uppercase;
+}
+
+.hdr-title{
+  font-family:var(--font-display);
+  font-size:54px;
+  letter-spacing:.02em;
+  margin:0;
+  line-height:1;
+}
+
+.hdr-sub{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-dim);
+  margin:8px 0 0;
+}
+
+.sync-status{
+  font-family:var(--font-mono);
+  font-size:9px;
+  letter-spacing:.04em;
+  color:var(--text-faint);
+  margin:7px 0 0;
+}
+
+/* LEGEND */
+
+.legend{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin:18px 0 20px;
+  flex-wrap:wrap;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-family:var(--font-mono);
+  font-size:9px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--text-faint);
+}
+
+.legend-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+}
+
+.legend-dot.explosive{
+  background:var(--explosive);
+}
+
+.legend-dot.strength{
+  background:var(--strength);
+}
+
+.legend-dot.hypertrophy{
+  background:var(--hyp);
+}
+
+/* DAYS */
+
+#days{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.day{
+  background:var(--bg-elev);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+
+.day>summary{
+  list-style:none;
+  cursor:pointer;
+}
+
+.day>summary::-webkit-details-marker{
+  display:none;
+}
+
+.day>summary::marker{
+  content:"";
+}
+
+.day-hdr{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px;
+}
+
+.day-index{
+  width:34px;
+  height:34px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--text-faint);
+  flex-shrink:0;
+}
+
+.day.is-complete .day-index{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-ink);
+}
+
+.day-hdr-mid{
+  flex:1;
+  min-width:0;
+}
+
+.day-title{
+  font-family:var(--font-display);
+  font-size:24px;
+  letter-spacing:.01em;
+  margin:0 0 3px;
+  line-height:1.05;
+}
+
+.day-meta{
+  font-family:var(--font-mono);
+  font-size:9px;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--text-faint);
+}
+
+.day-hdr-right{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-family:var(--font-mono);
+  flex-shrink:0;
+}
+
+.day-progress{
+  font-size:11px;
+  color:var(--text-dim);
+}
+
+.day.is-complete .day-progress{
+  color:var(--accent);
+}
+
+.chevron{
+  color:var(--text-faint);
+  transition:transform .15s ease;
+}
+
+.day[open] .chevron{
+  transform:rotate(180deg);
+}
+
+/* BODY */
+
+.day-body{
+  padding:0 12px 16px;
+}
+
+.day-note{
+  font-size:12.5px;
+  color:var(--text-dim);
+  margin:0 4px 9px;
+  padding:12px 4px 0;
+  border-top:1px solid var(--line);
+}
+
+.group-label{
+  font-family:var(--font-mono);
+  font-size:9.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--text-faint);
+  padding:10px 6px 4px;
+}
+
+.items{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+.item{
+  padding:9px 6px;
+  border-radius:8px;
+}
+
+.item-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.item-body{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.item-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:8px;
+}
+
+.item-name{
+  font-size:14px;
+}
+
+.item.is-done .item-name{
+  color:var(--text-dim);
+  text-decoration:line-through;
+  text-decoration-color:var(--text-faint);
+}
+
+.item-detail{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  color:var(--text-faint);
+  white-space:nowrap;
+  flex-shrink:0;
+}
+
+.item-bottom{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.item-sub{
+  font-size:10.5px;
+  color:var(--text-faint);
+}
+
+.item-cat{
+  font-family:var(--font-mono);
+  font-size:8px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:2px 5px;
+  border-radius:3px;
+  white-space:nowrap;
+}
+
+.cat-explosive{
+  background:var(--explosive-bg);
+  color:var(--explosive);
+}
+
+.cat-strength{
+  background:var(--strength-bg);
+  color:var(--strength);
+}
+
+.cat-hypertrophy{
+  background:var(--hyp-bg);
+  color:var(--hyp);
+}
+
+/* SET BUTTONS */
+
+.set-boxes{
+  display:flex;
+  gap:5px;
+  flex-shrink:0;
+}
+
+.set-box{
+  width:32px;
+  height:32px;
+  border-radius:8px;
+  border:1.5px solid var(--line);
+  background:var(--bg-elev-2);
+  color:var(--text-faint);
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  transition:.12s;
+}
+
+.set-box:hover{
+  border-color:var(--accent);
+}
+
+.set-box.is-done{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-ink);
+}
+
+.set-box:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+
+/* WEIGHT / REPS */
+
+.lift-row{
+  padding:4px 6px 2px;
+}
+
+.lift-display{
+  background:none;
+  border:none;
+  padding:0;
+  margin:0;
+  font-family:var(--font-mono);
+  font-size:10px;
+  color:var(--text-faint);
+  cursor:pointer;
+  text-align:left;
+}
+
+.lift-display:hover{
+  color:var(--accent);
+}
+
+.lift-display b{
+  color:var(--text-dim);
+  font-weight:600;
+}
+
+.lift-edit{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:5px;
+}
+
+.lift-edit[hidden]{
+  display:none;
+}
+
+.lift-w,
+.lift-r{
+  width:58px;
+  background:var(--bg-elev-2);
+  border:1px solid var(--line);
+  border-radius:5px;
+  color:var(--text);
+  font-family:var(--font-mono);
+  font-size:11px;
+  padding:6px;
+}
+
+.lift-unit,
+.lift-x{
+  color:var(--text-faint);
+  font-size:9px;
+}
+
+.lift-save{
+  background:var(--accent);
+  color:var(--accent-ink);
+  border:none;
+  border-radius:5px;
+  padding:6px 10px;
+  font-family:var(--font-mono);
+  font-size:9.5px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{
+    transition:none!important;
+  }
+}
+
+@media (max-width:380px){
+  .hdr-title{
+    font-size:46px;
+  }
+
+  .day-title{
+    font-size:21px;
+  }
+
+  .set-box{
+    width:30px;
+    height:30px;
+  }
+}
+</style>
 </head>
+
 <body>
+
 <div class="wrap">
+
   <header class="hdr">
     <p class="hdr-eyebrow">Training Program</p>
+
     <h1 class="hdr-title">CAMP LOG</h1>
-    <p class="hdr-sub">4-day strength · athleticism · conditioning</p>
-    <p class="sync-status" id="syncStatusText"></p>
+
+    <p class="hdr-sub">
+      4-day strength · athleticism · conditioning
+    </p>
+
+    <p class="sync-status" id="syncStatusText">
+      Saved on this device
+    </p>
   </header>
 
   <div class="legend">
-    <span class="legend-item"><span class="legend-dot explosive"></span>Explosive · 5 max</span>
-    <span class="legend-item"><span class="legend-dot strength"></span>Strength · 8-10</span>
-    <span class="legend-item"><span class="legend-dot hypertrophy"></span>Hypertrophy · 12-20</span>
+
+    <span class="legend-item">
+      <span class="legend-dot explosive"></span>
+      Explosive · 5 max
+    </span>
+
+    <span class="legend-item">
+      <span class="legend-dot strength"></span>
+      Strength · 8-10
+    </span>
+
+    <span class="legend-item">
+      <span class="legend-dot hypertrophy"></span>
+      Hypertrophy · 12-20
+    </span>
+
   </div>
 
   <main id="days"></main>
+
 </div>
 
 <script>
-/* ============================================================
-   ONE-TIME SETUP: paste your Pantry ID below (see chat for how
-   to get one — takes about 30 seconds, no password, just an ID).
-   Every device that loads this page will then read/write the
-   same shared data automatically. Nothing else to configure.
-   ============================================================ */
-const PANTRY_ID = "PASTE_YOUR_PANTRY_ID_HERE";
-const BASKET_NAME = "camplog-lifts";
 
-const STORAGE_KEY = 'campLogState';
-const LIFTS_LOCAL_KEY = 'campLogLifts';
+/* ============================================================
+   WORKOUT PROGRAM
+   ============================================================ */
 
 const DAYS = [
-  { title:"Push + Abs + Neck", meta:"Push · Abs · Neck", time:"~55 min",
-    note:"Chest, shoulders, triceps, abs and neck. Keep explosive work fast and controlled.",
+
+  /* ----------------------------------------------------------
+     1. PUSH + ABS + NECK
+     ---------------------------------------------------------- */
+
+  {
+    title:"Push + Abs + Neck",
+    meta:"Push · Abs · Neck",
+    time:"~55 min",
+
+    note:
+      "Chest, shoulders, triceps, abs and neck. Keep explosive work fast and controlled.",
+
     items:[
-      {name:"Incline DB Press", sub:"Upper chest", cat:"strength", sets:2, detail:"2 x 8-10", group:"Chest"},
-      {name:"Flat Barbell Bench Press", sub:"Mid chest", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Chest"},
-      {name:"Weighted Dips", sub:"Lower chest", cat:"strength", sets:2, detail:"2 x 8-10", group:"Chest"},
-      {name:"Butterfly / Cable Cross", sub:"Chest", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Chest"},
-      {name:"DB Front Raise", sub:"Front delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
-      {name:"DB Lateral Raise", sub:"Side delt", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Shoulders"},
-      {name:"Close-Grip Bench Press", sub:"Long head", cat:"strength", sets:2, detail:"2 x 8-10", group:"Triceps"},
-      {name:"Rope Pushdown", sub:"Lateral head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Triceps"},
-      {name:"Reverse-Grip Pushdown", sub:"Medial head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Triceps"},
-      {name:"Cable Crunch", sub:"Upper abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Dragon Flag", sub:"Lower abs", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Russian Twists", sub:"Obliques", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Push-Up Plus", sub:"Serratus anterior", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Abs"},
-      {name:"Neck Curl", sub:"Flexion, front", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
-      {name:"Neck Harness Extension", sub:"Extension, back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"},
-      {name:'"Mike Tyson"', sub:"Front & back", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Neck"}
+
+      {
+        name:"Incline DB Press",
+        sub:"Upper chest",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10",
+        group:"Chest"
+      },
+
+      {
+        name:"Flat Barbell Bench Press",
+        sub:"Mid chest",
+        cat:"explosive",
+        sets:2,
+        detail:"2 x 5 max",
+        group:"Chest"
+      },
+
+      {
+        name:"Weighted Dips",
+        sub:"Lower chest",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10",
+        group:"Chest"
+      },
+
+      {
+        name:"Butterfly / Cable Cross",
+        sub:"Chest",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Chest"
+      },
+
+      {
+        name:"DB Front Raise",
+        sub:"Front delt",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Shoulders"
+      },
+
+      {
+        name:"DB Lateral Raise",
+        sub:"Side delt",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Shoulders"
+      },
+
+      {
+        name:"Close-Grip Bench Press",
+        sub:"Long head",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10",
+        group:"Triceps"
+      },
+
+      {
+        name:"Rope Pushdown",
+        sub:"Lateral head",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Triceps"
+      },
+
+      {
+        name:"Reverse-Grip Pushdown",
+        sub:"Medial head",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Triceps"
+      },
+
+      {
+        name:"Cable Crunch",
+        sub:"Upper abs",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Abs"
+      },
+
+      {
+        name:"Dragon Flag",
+        sub:"Lower abs",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Abs"
+      },
+
+      {
+        name:"Russian Twists",
+        sub:"Obliques",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Abs"
+      },
+
+      {
+        name:"Push-Up Plus",
+        sub:"Serratus anterior",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Abs"
+      },
+
+      {
+        name:"Neck Curl",
+        sub:"Flexion, front",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Neck"
+      },
+
+      {
+        name:"Neck Harness Extension",
+        sub:"Extension, back",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Neck"
+      },
+
+      {
+        name:"\"Mike Tyson\"",
+        sub:"Front & back",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Neck"
+      }
+
     ]
   },
-  { title:"Pull + Forearms + Traps", meta:"Pull · Forearms · Traps", time:"~55 min",
-    note:"Back, biceps, forearms and traps. Pull-ups stay explosive; the rest stays controlled.",
+
+
+  /* ----------------------------------------------------------
+     2. PULL + FOREARMS + TRAPS
+     ---------------------------------------------------------- */
+
+  {
+    title:"Pull + Forearms + Traps",
+    meta:"Pull · Forearms · Traps",
+    time:"~55 min",
+
+    note:
+      "Back, biceps, forearms and traps. Pull-ups stay explosive; the rest stays controlled.",
+
     items:[
-      {name:"Pull-Ups", sub:"Lats, upper / vertical pull", cat:"explosive", sets:2, detail:"2 x 5 max", group:"Back"},
-      {name:"Straight-Arm Pulldown", sub:"Lats, lower / diagonal pull", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
-      {name:"Chest-Supported Row", sub:"Rhomboids", cat:"strength", sets:2, detail:"2 x 8-10", group:"Back"},
-      {name:"Back Extension", sub:"Erector spinae", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
-      {name:"DB Pullover", sub:"Teres major", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Back"},
-      {name:"EZ-Bar Preacher Curl", sub:"Short head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
-      {name:"Incline DB Curl", sub:"Long head", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
-      {name:"Hammer Curl", sub:"Brachialis", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
-      {name:"EZ-Bar Reverse Curl", sub:"Brachioradialis", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Biceps"},
-      {name:"Wrist Curls", sub:"Flexors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
-      {name:"Reverse Wrist Curls", sub:"Extensors", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
-      {name:"DB Pronation / Supination", sub:"Pronators / supinators", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Forearms"},
-      {name:"Farmer Carry", sub:"Grip", cat:"hypertrophy", sets:2, detail:"2 x 30-40m", group:"Forearms"},
-      {name:"Barbell / DB Shrugs", sub:"Upper traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
-      {name:"Face Pulls", sub:"Middle traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"},
-      {name:"Y-Raises", sub:"Lower traps", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Traps"}
+
+      {
+        name:"Pull-Ups",
+        sub:"Lats, upper / vertical pull",
+        cat:"explosive",
+        sets:2,
+        detail:"2 x 5 max",
+        group:"Back"
+      },
+
+      {
+        name:"Straight-Arm Pulldown",
+        sub:"Lats, lower / diagonal pull",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Back"
+      },
+
+      {
+        name:"Chest-Supported Row",
+        sub:"Rhomboids",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10",
+        group:"Back"
+      },
+
+      {
+        name:"Back Extension",
+        sub:"Erector spinae",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Back"
+      },
+
+      {
+        name:"DB Pullover",
+        sub:"Teres major",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Back"
+      },
+
+      {
+        name:"EZ-Bar Preacher Curl",
+        sub:"Short head",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Biceps"
+      },
+
+      {
+        name:"Incline DB Curl",
+        sub:"Long head",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Biceps"
+      },
+
+      {
+        name:"Hammer Curl",
+        sub:"Brachialis",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Biceps"
+      },
+
+      {
+        name:"EZ-Bar Reverse Curl",
+        sub:"Brachioradialis",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Biceps"
+      },
+
+      {
+        name:"Wrist Curls",
+        sub:"Flexors",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Forearms"
+      },
+
+      {
+        name:"Reverse Wrist Curls",
+        sub:"Extensors",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Forearms"
+      },
+
+      {
+        name:"DB Pronation / Supination",
+        sub:"Pronators / supinators",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Forearms"
+      },
+
+      {
+        name:"Farmer Carry",
+        sub:"Grip",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 30-40m",
+        group:"Forearms"
+      },
+
+      {
+        name:"Barbell / DB Shrugs",
+        sub:"Upper traps",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Traps"
+      },
+
+      {
+        name:"Face Pulls",
+        sub:"Middle traps",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Traps"
+      },
+
+      {
+        name:"Y-Raises",
+        sub:"Lower traps",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Traps"
+      }
+
     ]
   },
-  { title:"Legs", meta:"Quads · Hamstrings · Glutes · Calves", time:"~50 min",
-    note:"Quads, hamstrings, glutes and calves. Hip thrust stays explosive; RDL stays a rep short of failure.",
+
+
+  /* ----------------------------------------------------------
+     3. LEGS
+     ---------------------------------------------------------- */
+
+  {
+    title:"Legs",
+    meta:"Quads · Hamstrings · Glutes · Calves",
+    time:"~50 min",
+
+    note:
+      "Quads, hamstrings, glutes and calves. Hip thrust stays explosive; RDL stays a rep short of failure.",
+
     items:[
-      {name:"Leg Extension", sub:"Rectus femoris", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Quads"},
-      {name:"Deep Squats", sub:"Vastus lateralis", cat:"strength", sets:2, detail:"2 x 8-10", group:"Quads"},
-      {name:"Bulgarian Split Squats", sub:"Vastus medialis", cat:"strength", sets:2, detail:"2 x 8-10", group:"Quads"},
-      {name:"Romanian Deadlift", sub:"Biceps femoris", cat:"strength", sets:2, detail:"2 x 8-10, stop short of failure", group:"Hamstrings"},
-      {name:"Leg Curl", sub:"Semitendinosus / semimembranosus", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Hamstrings"},
-      {name:"Kegel Glute Bridge", sub:"Glutes", cat:"hypertrophy", sets:2, detail:"2 x 15-20", group:"Glutes"},
-      {name:"Lying Side Leg Raises (Alt: Cable Hip Abduction)", sub:"Glute medius", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Glutes"},
-      {name:"Standing Calf Raise", sub:"Inner, medial gastroc", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
-      {name:"Seated Calf Raise", sub:"Outer, lateral gastroc", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"},
-      {name:"Tib Raises", sub:"Tibialis anterior / shin", cat:"hypertrophy", sets:2, detail:"2 x 12-20", group:"Calves"}
+
+      {
+        name:"Leg Extension",
+        sub:"Rectus femoris",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Quads"
+      },
+
+      {
+        name:"Deep Squats",
+        sub:"Vastus lateralis",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10",
+        group:"Quads"
+      },
+
+      {
+        name:"Bulgarian Split Squats",
+        sub:"Vastus medialis",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10",
+        group:"Quads"
+      },
+
+      {
+        name:"Romanian Deadlift",
+        sub:"Biceps femoris",
+        cat:"strength",
+        sets:2,
+        detail:"2 x 8-10, stop short of failure",
+        group:"Hamstrings"
+      },
+
+      {
+        name:"Leg Curl",
+        sub:"Semitendinosus / semimembranosus",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Hamstrings"
+      },
+
+      {
+        name:"Kegel Glute Bridge",
+        sub:"Glutes",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 15-20",
+        group:"Glutes"
+      },
+
+      {
+        name:"Lying Side Leg Raises (Alt: Cable Hip Abduction)",
+        sub:"Glute medius",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Glutes"
+      },
+
+      {
+        name:"Standing Calf Raise",
+        sub:"Inner, medial gastroc",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Calves"
+      },
+
+      {
+        name:"Seated Calf Raise",
+        sub:"Outer, lateral gastroc",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Calves"
+      },
+
+      {
+        name:"Tib Raises",
+        sub:"Tibialis anterior / shin",
+        cat:"hypertrophy",
+        sets:2,
+        detail:"2 x 12-20",
+        group:"Calves"
+      }
+
     ]
   },
-  { title:"Cardio + Explosiveness", meta:"Conditioning", time:"~15-30 min",
-    note:"If a heavy bag is available, use it. If not, do 5 treadmill sprint rounds: 30-60 seconds hard per round.",
+
+
+  /* ----------------------------------------------------------
+     4. CARDIO + EXPLOSIVENESS
+     ---------------------------------------------------------- */
+
+  {
+    title:"Cardio + Explosiveness",
+    meta:"Conditioning",
+    time:"~15-30 min",
+
+    note:
+      "If a heavy bag is available, use it. If not, do 5 treadmill sprint rounds: 30-60 seconds hard per round.",
+
     items:[
-      {name:"Heavy Bag, all-out", detail:"30-60 sec / round", group:"Option A — Heavy Bag"},
-      {name:"Treadmill Sprint", detail:"30-60 sec hard", group:"Option B — No Heavy Bag", sets:5, cat:"explosive"},
-      {name:"Recovery", detail:"Short recovery between rounds", group:"Option B — No Heavy Bag", sets:1}
+
+      {
+        name:"Heavy Bag, all-out",
+        detail:"30-60 sec / round",
+        group:"Option A — Heavy Bag"
+      },
+
+      {
+        name:"Treadmill Sprint",
+        detail:"30-60 sec hard",
+        group:"Option B — No Heavy Bag",
+        sets:5,
+        cat:"explosive"
+      },
+
+      {
+        name:"Recovery",
+        detail:"Short recovery between rounds",
+        group:"Option B — No Heavy Bag",
+        sets:1
+      }
+
     ]
   }
+
 ];
 
-/* ---------- persistent workout state ---------- */
-const STORAGE_KEY = 'campLogStateV2';
-const LIFTS_LOCAL_KEY = 'campLogLiftsV2';
+
+/* ============================================================
+   LOCAL STORAGE
+   ============================================================
+
+   Everything is stored directly in this browser.
+
+   No account.
+   No database.
+   No external storage service.
+
+   This means:
+   - Your phone keeps its own data.
+   - Your computer keeps its own data.
+   - GitHub only hosts the website.
+
+   ============================================================ */
+
+const STORAGE_KEY = "campLogStateV2";
+const LIFTS_LOCAL_KEY = "campLogLiftsV2";
+
 
 function loadState(){
-  try{ const raw=localStorage.getItem(STORAGE_KEY); return raw?JSON.parse(raw):{}; }catch(e){ return {}; }
+
+  try{
+
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    return raw ? JSON.parse(raw) : {};
+
+  }catch(error){
+
+    return {};
+
+  }
+
 }
+
+
 function persist(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+
+  try{
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(state)
+    );
+
+  }catch(error){
+
+    console.error("Could not save workout state.", error);
+
+  }
+
 }
+
+
 function loadLocalLifts(){
-  try{ const raw=localStorage.getItem(LIFTS_LOCAL_KEY); return raw?JSON.parse(raw):{}; }catch(e){ return {}; }
+
+  try{
+
+    const raw = localStorage.getItem(LIFTS_LOCAL_KEY);
+
+    return raw ? JSON.parse(raw) : {};
+
+  }catch(error){
+
+    return {};
+
+  }
+
 }
+
+
 function saveLocalLifts(){
-  try{ localStorage.setItem(LIFTS_LOCAL_KEY, JSON.stringify(liftData)); }catch(e){}
-}
-function renderSyncStatus(){
-  const el=document.getElementById('syncStatusText');
-  if(el) el.textContent='Saved on this device';
+
+  try{
+
+    localStorage.setItem(
+      LIFTS_LOCAL_KEY,
+      JSON.stringify(liftData)
+    );
+
+  }catch(error){
+
+    console.error("Could not save lift data.", error);
+
+  }
+
 }
 
-function liftDisplayText(rec){
-  if(!rec || rec.lastWeight==null){ return 'Tap to log weight & reps'; }
-  const last = `${rec.lastWeight}kg×${rec.lastReps ?? '—'}`;
-  const best = rec.bestWeight!=null ? `${rec.bestWeight}kg×${rec.bestReps ?? '—'}` : last;
-  return `Last <b>${last}</b> · PR <b>${best}</b>`;
+
+/* ============================================================
+   SET / WORKOUT COMPLETION
+   ============================================================ */
+
+function setsFor(item){
+
+  return item.sets || 1;
+
 }
-function saveLift(exName, weight, reps){
-  if(weight==null || isNaN(weight)) return;
-  if(!liftData[exName]) liftData[exName]={};
-  const rec=liftData[exName];
-  rec.lastWeight=weight; rec.lastReps=reps;
-  if(rec.bestWeight==null || weight>rec.bestWeight){
-    rec.bestWeight=weight; rec.bestReps=reps;
-  }else if(weight===rec.bestWeight && reps!=null && (rec.bestReps==null || reps>rec.bestReps)){
-    rec.bestReps=reps;
-  }
-  saveLocalLifts();
-}
-/* ---------- set-level completion ---------- */
-function setsFor(it){ return it.sets || 1; }
-function doneCountFor(it, idx, dayState){
-  const arr = (dayState && dayState[idx]) || [];
+
+
+function doneCountFor(item, index, dayState){
+
+  const arr =
+    (dayState && dayState[index]) || [];
+
   return arr.filter(Boolean).length;
+
 }
+
+
 function dayCompletion(day, dayState){
-  if(day.items.length===0){
-    const done = !!(dayState && dayState.rested);
-    return {done: done?1:0, total:1, complete:done};
-  }
-  let total=0, done=0;
-  day.items.forEach((it,idx)=>{
-    const n = setsFor(it);
-    total += n;
-    done += doneCountFor(it, idx, dayState);
+
+  let total = 0;
+  let done = 0;
+
+  day.items.forEach((item,index)=>{
+
+    const sets = setsFor(item);
+
+    total += sets;
+
+    done += doneCountFor(
+      item,
+      index,
+      dayState
+    );
+
   });
-  return {done, total, complete: total>0 && done===total};
+
+  return {
+
+    done:done,
+
+    total:total,
+
+    complete:
+      total > 0 &&
+      done === total
+
+  };
+
 }
 
-function catLabel(cat){
-  if(cat==='explosive') return 'Explosive Tempo';
-  if(cat==='strength') return 'Strength';
-  if(cat==='hypertrophy') return 'Hypertrophy';
-  return '';
+
+/* ============================================================
+   CATEGORY LABELS
+   ============================================================ */
+
+function catLabel(category){
+
+  if(category === "explosive"){
+    return "Explosive Tempo";
+  }
+
+  if(category === "strength"){
+    return "Strength";
+  }
+
+  if(category === "hypertrophy"){
+    return "Hypertrophy";
+  }
+
+  return "";
+
 }
 
-function itemRowHTML(it, idx, dayState, key){
-  const n = setsFor(it);
-  const doneN = doneCountFor(it, idx, dayState);
-  const allDone = doneN === n;
-  const doneArr = (dayState && dayState[idx]) || [];
-  const hasMeta = it.sub || it.cat;
-  const bottom = hasMeta ? `
-        <div class="item-bottom">
-          ${it.sub ? `<span class="item-sub">${it.sub}</span>` : ''}
-          ${it.cat ? `<span class="item-cat cat-${it.cat}">${catLabel(it.cat)}</span>` : ''}
-        </div>` : '';
-  let boxes = '';
-  for(let s=0; s<n; s++){
-    const d = !!doneArr[s];
-    boxes += `<button type="button" class="set-box${d?' is-done':''}" data-key="${key}" data-idx="${idx}" data-set="${s}">${n>1 ? (s+1) : '\u2713'}</button>`;
+
+/* ============================================================
+   WEIGHT / REPS / PR LOGGING
+   ============================================================ */
+
+function liftDisplayText(record){
+
+  if(
+    !record ||
+    record.lastWeight == null
+  ){
+
+    return "Tap to log weight & reps";
+
   }
-  let liftHTML = '';
-  if(it.cat){
-    const rec = liftData[it.name];
-    liftHTML = `
-    <div class="lift-row" data-ex="${it.name}">
-      <button class="lift-display" type="button">${liftDisplayText(rec)}</button>
-      <div class="lift-edit" hidden>
-        <input class="lift-w" type="number" step="any" inputmode="decimal" placeholder="${rec&&rec.lastWeight!=null?rec.lastWeight:'kg'}">
-        <span class="lift-unit">kg</span>
-        <span class="lift-x">\u00d7</span>
-        <input class="lift-r" type="number" step="1" inputmode="numeric" placeholder="${rec&&rec.lastReps!=null?rec.lastReps:'reps'}">
-        <button class="lift-save" type="button">Save</button>
-      </div>
-    </div>`;
-  }
+
+
+  const last =
+    `${record.lastWeight}kg×${record.lastReps ?? "—"}`;
+
+
+  const best =
+    record.bestWeight != null
+
+      ? `${record.bestWeight}kg×${record.bestReps ?? "—"}`
+
+      : last;
+
+
   return `
-    <li class="item${allDone?' is-done':''}">
-      <div class="item-row">
-        <div class="item-body">
-          <div class="item-top">
-            <span class="item-name">${it.name}</span>
-            <span class="item-detail">${it.detail}</span>
-          </div>${bottom}
-        </div>
-        <div class="set-boxes">${boxes}</div>
-      </div>${liftHTML}
-    </li>`;
+    Last <b>${last}</b>
+    · PR <b>${best}</b>
+  `;
+
 }
 
-function itemRowHTML(it, idx, dayState, key){
-  const n=setsFor(it);
-  const doneN=doneCountFor(it,idx,dayState);
-  const allDone=doneN===n;
-  const doneArr=(dayState&&dayState[idx])||[];
-  const hasMeta=it.sub||it.cat;
-  const bottom=hasMeta?`<div class="item-bottom">
-    ${it.sub?`<span class="item-sub">${it.sub}</span>`:''}
-    ${it.cat?`<span class="item-cat cat-${it.cat}">${catLabel(it.cat)}</span>`:''}
-  </div>`:'';
-  let boxes='';
-  for(let s=0;s<n;s++){
-    const d=!!doneArr[s];
-    boxes+=`<button type="button" class="set-box${d?' is-done':''}" data-key="${key}" data-idx="${idx}" data-set="${s}">${n>1?(s+1):'✓'}</button>`;
+
+function saveLift(
+  exerciseName,
+  weight,
+  reps
+){
+
+  if(
+    weight == null ||
+    isNaN(weight)
+  ){
+
+    return;
+
   }
-  let liftHTML='';
-  if(it.cat){
-    const rec=liftData[it.name];
-    liftHTML=`<div class="lift-row" data-ex="${it.name}">
-      <button class="lift-display" type="button">${liftDisplayText(rec)}</button>
-      <div class="lift-edit" hidden>
-        <input class="lift-w" type="number" step="any" inputmode="decimal" placeholder="${rec&&rec.lastWeight!=null?rec.lastWeight:'kg'}">
-        <span class="lift-unit">kg</span><span class="lift-x">×</span>
-        <input class="lift-r" type="number" step="1" inputmode="numeric" placeholder="${rec&&rec.lastReps!=null?rec.lastReps:'reps'}">
-        <button class="lift-save" type="button">Save</button>
-      </div>
-    </div>`;
+
+
+  if(!liftData[exerciseName]){
+
+    liftData[exerciseName] = {};
+
   }
-  return `<li class="item${allDone?' is-done':''}">
-    <div class="item-row">
-      <div class="item-body">
-        <div class="item-top"><span class="item-name">${it.name}</span><span class="item-detail">${it.detail||''}</span></div>
-        ${bottom}
-      </div>
-      <div class="set-boxes">${boxes}</div>
-    </div>${liftHTML}
-  </li>`;
+
+
+  const record =
+    liftData[exerciseName];
+
+
+  record.lastWeight = weight;
+
+  record.lastReps = reps;
+
+
+  /*
+     PR logic:
+
+     1. Higher weight = new PR.
+     2. Same weight + more reps = new PR.
+  */
+
+  if(
+    record.bestWeight == null ||
+    weight > record.bestWeight
+  ){
+
+    record.bestWeight = weight;
+
+    record.bestReps = reps;
+
+  }
+
+  else if(
+    weight === record.bestWeight &&
+    reps != null &&
+    (
+      record.bestReps == null ||
+      reps > record.bestReps
+    )
+  ){
+
+    record.bestReps = reps;
+
+  }
+
+
+  saveLocalLifts();
+
 }
+
+
+/* ============================================================
+   EXERCISE HTML
+   ============================================================ */
+
+function itemRowHTML(
+  item,
+  index,
+  dayState,
+  key
+){
+
+  const numberOfSets =
+    setsFor(item);
+
+
+  const completedSets =
+    doneCountFor(
+      item,
+      index,
+      dayState
+    );
+
+
+  const allDone =
+    completedSets === numberOfSets;
+
+
+  const doneArray =
+    (dayState && dayState[index]) || [];
+
+
+  const hasMeta =
+    item.sub ||
+    item.cat;
+
+
+  const bottom =
+    hasMeta
+
+      ? `
+        <div class="item-bottom">
+
+          ${
+            item.sub
+              ? `<span class="item-sub">${item.sub}</span>`
+              : ""
+          }
+
+          ${
+            item.cat
+              ? `
+                <span class="item-cat cat-${item.cat}">
+                  ${catLabel(item.cat)}
+                </span>
+              `
+              : ""
+          }
+
+        </div>
+      `
+
+      : "";
+
+
+  let boxes = "";
+
+
+  for(
+    let setIndex = 0;
+    setIndex < numberOfSets;
+    setIndex++
+  ){
+
+    const isDone =
+      !!doneArray[setIndex];
+
+
+    boxes += `
+      <button
+        type="button"
+        class="set-box ${isDone ? "is-done" : ""}"
+        data-key="${key}"
+        data-idx="${index}"
+        data-set="${setIndex}"
+      >
+        ${
+          numberOfSets > 1
+            ? setIndex + 1
+            : "✓"
+        }
+      </button>
+    `;
+
+  }
+
+
+  let liftHTML = "";
+
+
+  /*
+     Any exercise with a category
+     can have weight/reps logged.
+  */
+
+  if(item.cat){
+
+    const record =
+      liftData[item.name];
+
+
+    liftHTML = `
+
+      <div
+        class="lift-row"
+        data-ex="${item.name}"
+      >
+
+        <button
+          class="lift-display"
+          type="button"
+        >
+          ${liftDisplayText(record)}
+        </button>
+
+
+        <div
+          class="lift-edit"
+          hidden
+        >
+
+          <input
+            class="lift-w"
+            type="number"
+            step="any"
+            inputmode="decimal"
+            placeholder="${
+              record &&
+              record.lastWeight != null
+
+                ? record.lastWeight
+
+                : "kg"
+            }"
+          >
+
+          <span class="lift-unit">
+            kg
+          </span>
+
+
+          <span class="lift-x">
+            ×
+          </span>
+
+
+          <input
+            class="lift-r"
+            type="number"
+            step="1"
+            inputmode="numeric"
+            placeholder="${
+              record &&
+              record.lastReps != null
+
+                ? record.lastReps
+
+                : "reps"
+            }"
+          >
+
+
+          <button
+            class="lift-save"
+            type="button"
+          >
+            Save
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  return `
+
+    <li class="item ${allDone ? "is-done" : ""}">
+
+      <div class="item-row">
+
+        <div class="item-body">
+
+          <div class="item-top">
+
+            <span class="item-name">
+              ${item.name}
+            </span>
+
+            <span class="item-detail">
+              ${item.detail || ""}
+            </span>
+
+          </div>
+
+          ${bottom}
+
+        </div>
+
+
+        <div class="set-boxes">
+
+          ${boxes}
+
+        </div>
+
+      </div>
+
+
+      ${liftHTML}
+
+    </li>
+
+  `;
+
+}
+
+
+/* ============================================================
+   RENDER
+   ============================================================ */
 
 function render(){
-  renderSyncStatus();
-  const daysEl=document.getElementById('days');
-  daysEl.innerHTML='';
 
-  DAYS.forEach((day,i)=>{
-    const key=`day-${i}`;
-    const dayState=state[key]||{};
-    const comp=dayCompletion(day,dayState);
+  const daysElement =
+    document.getElementById("days");
 
-    const details=document.createElement('details');
-    details.className='day'+(comp.complete?' is-complete':'');
-    if(openKeys.has(key)) details.open=true;
 
-    const summary=document.createElement('summary');
-    summary.className='day-hdr';
-    summary.innerHTML=`
-      <div class="day-index">${String(i+1).padStart(2,'0')}</div>
-      <div class="day-hdr-mid">
-        <h2 class="day-title">${day.title}</h2>
-        <span class="day-meta">${day.meta}</span>
+  daysElement.innerHTML = "";
+
+
+  DAYS.forEach((day,index)=>{
+
+    /*
+       Each workout has a permanent key.
+
+       No dates.
+       No weekdays.
+       No calendar.
+    */
+
+    const key =
+      `day-${index}`;
+
+
+    const dayState =
+      state[key] || {};
+
+
+    const completion =
+      dayCompletion(
+        day,
+        dayState
+      );
+
+
+    const details =
+      document.createElement("details");
+
+
+    details.className =
+      "day" +
+      (
+        completion.complete
+          ? " is-complete"
+          : ""
+      );
+
+
+    if(openKeys.has(key)){
+
+      details.open = true;
+
+    }
+
+
+    const summary =
+      document.createElement("summary");
+
+
+    summary.className =
+      "day-hdr";
+
+
+    summary.innerHTML = `
+
+      <div class="day-index">
+
+        ${
+          String(index + 1)
+            .padStart(2,"0")
+        }
+
       </div>
-      <div class="day-hdr-right">
-        <span class="day-progress">${comp.done}/${comp.total}</span>
-        <svg class="chevron" viewBox="0 0 24 24" width="18" height="18"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>`;
-    details.appendChild(summary);
-    details.addEventListener('toggle',()=>{ if(details.open) openKeys.add(key); else openKeys.delete(key); });
 
-    const body=document.createElement('div');
-    body.className='day-body';
-    const note=document.createElement('p');
-    note.className='day-note';
-    note.textContent=`${day.note} · ${day.time}`;
+
+      <div class="day-hdr-mid">
+
+        <h2 class="day-title">
+
+          ${day.title}
+
+        </h2>
+
+
+        <span class="day-meta">
+
+          ${day.meta}
+
+        </span>
+
+      </div>
+
+
+      <div class="day-hdr-right">
+
+        <span class="day-progress">
+
+          ${completion.done}/${completion.total}
+
+        </span>
+
+
+        <svg
+          class="chevron"
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+        >
+
+          <path
+            d="M6 9l6 6 6-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+
+        </svg>
+
+      </div>
+
+    `;
+
+
+    details.appendChild(summary);
+
+
+    details.addEventListener(
+      "toggle",
+      ()=>{
+
+        if(details.open){
+
+          openKeys.add(key);
+
+        }else{
+
+          openKeys.delete(key);
+
+        }
+
+      }
+    );
+
+
+    const body =
+      document.createElement("div");
+
+
+    body.className =
+      "day-body";
+
+
+    const note =
+      document.createElement("p");
+
+
+    note.className =
+      "day-note";
+
+
+    note.textContent =
+      `${day.note} · ${day.time}`;
+
+
     body.appendChild(note);
 
-    const ul=document.createElement('ul');
-    ul.className='items';
-    let lastGroup=null,html='';
-    day.items.forEach((it,idx)=>{
-      if(it.group&&it.group!==lastGroup){
-        html+=`<li class="group-label">${it.group}</li>`;
-        lastGroup=it.group;
+
+    const list =
+      document.createElement("ul");
+
+
+    list.className =
+      "items";
+
+
+    let lastGroup = null;
+
+    let html = "";
+
+
+    day.items.forEach(
+      (item,itemIndex)=>{
+
+        if(
+          item.group &&
+          item.group !== lastGroup
+        ){
+
+          html += `
+
+            <li class="group-label">
+
+              ${item.group}
+
+            </li>
+
+          `;
+
+          lastGroup =
+            item.group;
+
+        }
+
+
+        html +=
+          itemRowHTML(
+            item,
+            itemIndex,
+            dayState,
+            key
+          );
+
       }
-      html+=itemRowHTML(it,idx,dayState,key);
-    });
-    ul.innerHTML=html;
-    body.appendChild(ul);
+    );
+
+
+    list.innerHTML = html;
+
+
+    body.appendChild(list);
+
+
     details.appendChild(body);
-    daysEl.appendChild(details);
+
+
+    daysElement.appendChild(details);
+
   });
 
-  daysEl.querySelectorAll('.set-box').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const key=btn.dataset.key;
-      if(!state[key]) state[key]={};
-      const idx=btn.dataset.idx;
-      const s=parseInt(btn.dataset.set,10);
-      if(!state[key][idx]) state[key][idx]=[];
-      state[key][idx][s]=!state[key][idx][s];
-      persist();
-      render();
-    });
-  });
 
-  daysEl.querySelectorAll('.lift-display').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const editEl=btn.nextElementSibling;
-      editEl.hidden=!editEl.hidden;
-      if(!editEl.hidden) editEl.querySelector('.lift-w').focus();
-    });
-  });
+  /* ----------------------------------------------------------
+     SET BUTTONS
+     ---------------------------------------------------------- */
 
-  daysEl.querySelectorAll('.lift-save').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const row=btn.closest('.lift-row');
-      const exName=row.dataset.ex;
-      const w=parseFloat(row.querySelector('.lift-w').value);
-      const rRaw=row.querySelector('.lift-r').value;
-      const previous=liftData[exName];
-      const r=rRaw===''?(previous&&previous.lastReps!=null?previous.lastReps:null):parseInt(rRaw,10);
-      if(isNaN(w)) return;
-      saveLift(exName,w,r);
-      render();
+  daysElement
+    .querySelectorAll(".set-box")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          const key =
+            button.dataset.key;
+
+
+          if(!state[key]){
+
+            state[key] = {};
+
+          }
+
+
+          const index =
+            button.dataset.idx;
+
+
+          const set =
+            parseInt(
+              button.dataset.set,
+              10
+            );
+
+
+          if(!state[key][index]){
+
+            state[key][index] = [];
+
+          }
+
+
+          state[key][index][set] =
+            !state[key][index][set];
+
+
+          persist();
+
+
+          render();
+
+        }
+      );
+
     });
-  });
+
+
+  /* ----------------------------------------------------------
+     WEIGHT / REPS EDIT BUTTONS
+     ---------------------------------------------------------- */
+
+  daysElement
+    .querySelectorAll(".lift-display")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          const editElement =
+            button.nextElementSibling;
+
+
+          editElement.hidden =
+            !editElement.hidden;
+
+
+          if(!editElement.hidden){
+
+            editElement
+              .querySelector(".lift-w")
+              .focus();
+
+          }
+
+        }
+      );
+
+    });
+
+
+  /* ----------------------------------------------------------
+     SAVE WEIGHT / REPS
+     ---------------------------------------------------------- */
+
+  daysElement
+    .querySelectorAll(".lift-save")
+    .forEach(button=>{
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          const row =
+            button.closest(".lift-row");
+
+
+          const exerciseName =
+            row.dataset.ex;
+
+
+          const weight =
+            parseFloat(
+              row
+                .querySelector(".lift-w")
+                .value
+            );
+
+
+          const repsRaw =
+            row
+              .querySelector(".lift-r")
+              .value;
+
+
+          const previous =
+            liftData[exerciseName];
+
+
+          const reps =
+            repsRaw === ""
+
+              ? (
+                  previous &&
+                  previous.lastReps != null
+
+                    ? previous.lastReps
+
+                    : null
+                )
+
+              : parseInt(
+                  repsRaw,
+                  10
+                );
+
+
+          if(isNaN(weight)){
+
+            return;
+
+          }
+
+
+          saveLift(
+            exerciseName,
+            weight,
+            reps
+          );
+
+
+          render();
+
+        }
+      );
+
+    });
+
 }
 
-let state=loadState();
-let liftData=loadLocalLifts();
-let openKeys=new Set(['day-0']);
+
+/* ============================================================
+   START APP
+   ============================================================ */
+
+let state =
+  loadState();
+
+
+let liftData =
+  loadLocalLifts();
+
+
+/*
+   First workout starts open.
+*/
+
+let openKeys =
+  new Set(["day-0"]);
+
+
 render();
 
 </script>
+
 </body>
 </html>
